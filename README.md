@@ -20,7 +20,7 @@
     
   3. Steuerung:(2 Seiten)
   
-## Erebnisse:(1 Seite)
+## Ergebnisse:(1 Seite)
 
 ## Disskusion:(2 Seiten am Ende)
 
