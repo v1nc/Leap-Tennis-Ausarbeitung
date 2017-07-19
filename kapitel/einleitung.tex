@@ -4,106 +4,43 @@
 
 \chapter{Einleitung}
 \label{Einleitung}
+1 Einleitung
+Das vorliegende Arbeit beschäftigt sich mit dem Abschlussprojekt des Visual Computing Fachprojekts zur Realisierung eines virtuellen Tennis Spiels, bei dem 
+die Steuerung durch Leap Motion umgesetzt wird.
+In dem Projekt wurden einige Projekte, welche zuvor im Fachprojekt vorgestellt wurden, kombiniert. Hierbei wurde vor allem Leap Motion für die Realisierung des Schlägers genutzt und des weiteren
+Grundkenntnisse in OpenGL um die benötigten Objekte zu visualisieren.
 
-\section{Motivation und Hintergrund}
+
+
+
+\section{Motivation}
 \label{Motivation_und_Hintergrund}
 %
-Literatur \cite{Abramowski:1991} oder \cite{Abramowski:1991, Muller:2011} und Verweis auf Kapitel
-\ref{Kapitel 2} ab Seite \pageref{Kapitel 2}.
+1.1 Motivation 
+Für die letzte Phase des Fachprojekts wurde die Vorgabe gestellt, ein eigenständiges Projekt in einer kleinen Gruppe zu entwickeln, wobei wir dabei
+das bereits Gelernte kreativ einsetzen sollten, damit die erlernten Kompentenzen aufgefrischt und gefestigt werden.
+Die Idee für die wir uns nach kurzer Beratungszeit entschieden haben sollte ein Tennis Spiel sein, wobei die Hand als Schläger fungiert und die Erkennung der Hand
+durch Leap Motion gewährleistet wird. 
+Das Projekt besteht aus hinreichend vielen Problemen, welche wir gleichmäßig aufteilten. Die Teilprobleme haben unterteilt in die physikalischen Einflüsse, wobei
+wir großen Wert auf einen realistischen Spielfluss gelegt haben, das Rendering, um die gebrauchten Objekte zu erstellen und die Steuerung, welches vorallem die korrekte Erfassung der Hand
+beinhaltete. 
+Die Regeln des Spieles sind sehr schnell zu erlernen und sprechen jede mögliche Zielgruppe an, da die Regeln leicht verständlich und die Steuerung sehr intuitiv sind. %deswegen haben wir großen Wert auf ein an
 
 
 
-\section{Aufbau der Arbeit}
+
+\newpage
+\section{Problemstellung}
 \label{Aufbau_der_Arbeit}
 %
-Er hörte \enquote{leise Schritte} hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel\footnote{Wer würde ihm schon folgen.}? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben
-schon hören.
 
-Gehetzt sah er sich um. Plötzlich erblickte er den schmalen
-Durchgang. Blitzartig drehte er sich nach rechts und verschwand
-zwischen den beiden Gebäuden. Beinahe wäre er dabei über den
-umgestürzten Mülleimer gefallen, der mitten im Weg lag. Er
-versuchte, sich in der Dunkelheit seinen Weg zu ertasten und
-erstarrte: Anscheinend gab es keinen anderen Ausweg aus diesem
-kleinen Hof als den Durchgang, durch den er gekommen war. Die
-Schritte wurden lauter und lauter, er sah eine dunkle Gestalt um
-die Ecke biegen. Fieberhaft irrten seine Augen durch die
-nächtliche Dunkelheit und suchten einen Ausweg. War jetzt wirklich
-alles vorbei, waren alle Mühe und alle Vorbereitungen umsonst?
+Um das Tennis Spiel zu realisieren haben wir uns intensiv mit folgenden drei Teilproblemem beschäfigt. Da sie teilweise nicht aufeinander aufbauten, hat es sich angeboten parallel an denen zu arbeiten.\\
+Für die Steuerung des Spiels musste der Leap Motion Kontroller korrekt angebunden werden, sodass zusätzliche Daten bezüglich der Hand gewonnen werden konnte, welche beispielweise für die Ausrichtung des Schlägers wichtig war.
+Durch Anbindung des Leap Motion Kontrollers haben wir das Ziel verfolgt die Intuitivität des Spielers anzusprechen, da er zum Spielen lediglich seine Hand braucht.\\
+Die Objekte, welche visualisiert werden sollten, mussten gerendert werden. Dies beinhaltete unter anderem eine Box in der das Spiel abläuft, einen Ball und einen Schläger. Außerdem wurden
+einige Extras eingebunden, um dem ganzen Projekt mehr Farbe zu geben.\\
+Der dritte Themenbereich umfasst die ganze Physik und die Berechnungen welche diese mit sich führt. Dabei haben wir Wert darauf gelegt Faktoren die in der Realität vorhanden sind, wie 
+zum Beispiel die Schwerkraft oder ähnliches in unser Projekt zu implementieren, um dem Spieler eben dieses Gefühl von Intuitivität und Realität wiederzugeben. 
+Die Kollisionserkennung und Berechnung fällt unter diesen Teilbereich, wobei wieder versucht wurde die genannten Faktoren zu realisieren.
 
-Er presste sich ganz eng an die Wand hinter ihm und hoffte, der
-Verfolger würde ihn übersehen, als plötzlich neben ihm mit kaum
-wahrnehmbarem Quietschen eine Tür im nächtlichen Wind hin und her
-schwang. Könnte dieses der flehentlich herbeigesehnte Ausweg aus
-seinem Dilemma sein? Langsam bewegte er sich auf die offene Tür
-zu, immer dicht an die Mauer gepresst. Würde diese Tür seine
-Rettung werden? Er hörte leise Schritte hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben schon hören. Gehetzt sah er sich
-um. Plötzlich erblickte er den schmalen Durchgang. Blitzartig
-drehte er sich nach rechts und verschwand zwischen den beiden
-Gebäuden.
 
-Er hörte \enquote{leise Schritte} hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben
-schon hören.
-
-Gehetzt sah er sich um. Plötzlich erblickte er den schmalen
-Durchgang. Blitzartig drehte er sich nach rechts und verschwand
-zwischen den beiden Gebäuden. Beinahe wäre er dabei über den
-umgestürzten Mülleimer gefallen, der mitten im Weg lag. Er
-versuchte, sich in der Dunkelheit seinen Weg zu ertasten und
-erstarrte: Anscheinend gab es keinen anderen Ausweg aus diesem
-kleinen Hof als den Durchgang, durch den er gekommen war. Die
-Schritte wurden lauter und lauter, er sah eine dunkle Gestalt um
-die Ecke biegen. Fieberhaft irrten seine Augen durch die
-nächtliche Dunkelheit und suchten einen Ausweg. War jetzt wirklich
-alles vorbei, waren alle Mühe und alle Vorbereitungen umsonst?
-
-Er presste sich ganz eng an die Wand hinter ihm und hoffte, der
-Verfolger würde ihn übersehen, als plötzlich neben ihm mit kaum
-wahrnehmbarem Quietschen eine Tür im nächtlichen Wind hin und her
-schwang. Könnte dieses der flehentlich herbeigesehnte Ausweg aus
-seinem Dilemma sein? Langsam bewegte er sich auf die offene Tür
-zu, immer dicht an die Mauer gepresst. Würde diese Tür seine
-Rettung werden? Er hörte leise Schritte hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben schon hören. Gehetzt sah er sich
-um. Plötzlich erblickte er den schmalen Durchgang. Blitzartig
-drehte er sich nach rechts und verschwand zwischen den beiden
-Gebäuden.
