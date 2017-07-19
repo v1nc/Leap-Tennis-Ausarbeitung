@@ -12,7 +12,7 @@
 Partikelsysteme sind in interaktiven Anwendungen wie Computerspiele und in der Postproduktion von Filmen, seien es Real- oder Animationsfilme, allgegenwärtig.
 Man denke an typische Effekte wie Feuer und Rauch, aber auch Flüssigkeiten lassen sich mithilfe von Partikelsystemen realisieren.
 
-In seinem im Jahre 1983 veröffentlichtem Papier bezeichnet William T. Reeves diese Arten von Objekten als ‚fuzzy‘. Erstens sind sie zu komplex, um sie als Ganzes mit einem einzigen Mesh darstellen zu können. Daher teilt man das gesamte Objekt in viele kleinere Objekte, also die typischen Primitive wie Punkte, Linien oder Dreiecke. Zweitens bleibt die Form dieser Objekte meistens nicht starr, sie ändert sich im Verlauf der Zeit. Man denke beispielsweise an die Ausbreitung von Rauch. Drittens ist die Ausbreitung der Partikel keinem deterministischem Prozess unterworfen.
+In seinem im Jahre 1983 veröffentlichtem Papier(siehe \cite{reeves:particle_systems}) bezeichnet William T. Reeves diese Arten von Objekten als ‚fuzzy‘. Erstens sind sie zu komplex, um sie als Ganzes mit einem einzigen Mesh darstellen zu können. Daher teilt man das gesamte Objekt in viele kleinere Objekte, also die typischen Primitive wie Punkte, Linien oder Dreiecke. Zweitens bleibt die Form dieser Objekte meistens nicht starr, sie ändert sich im Verlauf der Zeit. Man denke beispielsweise an die Ausbreitung von Rauch. Drittens ist die Ausbreitung der Partikel keinem deterministischem Prozess unterworfen.
 
 In unserer Anwendung wird ein Partikelsystem genutzt um den Flugverlauf des Balles darzustellen. 
 
@@ -38,14 +38,37 @@ Abbildung zeigt beispielhaft wie rendern mit instance-Variablen abläuft.
 \subsection{Billboarding}
 \label{Kapitel_2_-_Unterkapitel_1.3}
 %
-Für ein besseres visuelles Ergebnis werden die Quads, auf die die Partikeltextur projiziert werden, immer orthogonal zur Kamera gerendert. Die Quads erfahren durch die
-Modelview-Matrix keinerlei Rotationen. Um diesen Effekt, der als Bollboarding bezeichnet wird, zu erreichen muss der Rotationsanteil der View-Matrix, also die linke obere 3x3-Matrix, auf die Einheitsmatrix gesetzt werden.
+Für ein besseres visuelles Ergebnis werden die Quads, auf die die Partikeltextur projiziert werden, immer orthogonal zur Blickrichtung der Kamera gerendert. Die Quads erfahren durch die
+Modelview-Matrix keinerlei Rotationen. Um diesen Effekt, der als Billboarding bezeichnet wird, zu erreichen muss der Rotationsanteil der View-Matrix, also die linke obere 3x3-Matrix, auf die Einheitsmatrix gesetzt werden.
 
 (Hier Abbildung ohne Billboarding)
 
 Rotationsmatrizen sind Orthogonalmatrizen, das heißt, dass ihre Inversen ihren Transponierten entsprechen. Es genügt also beim Berechnen der Modelview-Matrix die obere linke 3x3-Matrix der Model-Matrix durch die Transponierte des Rotationsanteils der View-Matrix zu ersetzen. Da die Partikel in unserem System auch eine Größe haben wird die
 resultierende ModelView-Matrix noch mit einer Skalierungsmatrix multipliziert werden.
 
-\subsection{Additives Blending}
+\subsection{Blending und Tiefentest}
 \label{Kapitel_2_-_Unterkapitel_1.4}
+%
+In dem verwendeten Partikelsystem sollen die Farben der Partikel, wenn sie sich überlagern, addiert werden. Der resultierende Effekt ist, dass bei genügend sich überlagernden Partikel ein leuchtend weißer Bereich zu sehen ist. Blending erlaubt es, Farben miteinander zu vermischen und ist ein Teil der Verarbeitung der Fragmente in der Rendering Pipeline. OpenGL bietet verschiedene Blending-Arten an, die durch den Aufruf der Funktion {\texttt{glBlendFunc}} eingestellt werden können. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{bilder/BlendingEnabled}
+\caption{Partikelsystem bei aktiviertem Blending}
+\label{fig:BlendingEnabled}
+\end{figure}
+
+Abbildung 2.1 zeigt wie das Partikelsystem bei eingeschaltetem Blending und Verwendung von {\texttt{glBlendFunc}} mit den Argumenten {\texttt{GL\_SRC\_ALPHA}} und {\texttt{GL\_ONE}} aussieht. Eine Übersicht über die verschiedenen Argumente für {\texttt{glBlendFunc}} und ihre Auswirkungen auf die Farbe eines Fragments ist in \cite{virag:2012} zu finden.
+
+Wie an Abbildung 2.1 zu erkennen ist tritt trotz eingeschaltetem Blending der gewünschte Effekt nicht auf. Grund dafür ist der Tiefentest. Für den Tiefentest spielt es keine Rolle, ob ein Fragment teilweise transparent ist, da der Tiefenwert für ein Fragment trotzdem in den Tiefenpuffer geschrieben wird, vorausgesetzt der Wert ist geringer.
+
+Um dies zu umgehen, lässt sich mittels der Funktion {\texttt{glDepthMask}} das Schreiben in den Tiefenpuffer für das Rendern der Partikel verbieten.
+Das endgültige Resultat ist in Abbildung 2.2 zu sehen.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{bilder/ParticleFinal}
+	\caption{Partikelsystem bei aktiviertem Blending und nicht-beschreibbarem Tiefenpuffer}
+	\label{fig:ParticleFinal}
+\end{figure}
 %
