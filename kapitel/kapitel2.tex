@@ -2,156 +2,50 @@
 % TU Dortmund, Informatik Lehrstuhl VII
 %========================================================================================
 
-\chapter{Das Kapitel 2}
+\chapter{Rendering}
 \label{Kapitel 2}
 %
-Gehetzt sah er sich um. Plötzlich erblickte er den schmalen
-Durchgang. Blitzartig drehte er sich nach rechts und verschwand
-zwischen den beiden Gebäuden. Beinahe wäre er dabei über den
-umgestürzten Mülleimer gefallen, der mitten im Weg lag. Er
-versuchte, sich in der Dunkelheit seinen Weg zu ertasten und
-erstarrte: Anscheinend gab es keinen anderen Ausweg aus diesem
-kleinen Hof als den Durchgang, durch den er gekommen war.
 
-
-\section{Kapitel 2 - Unterkapitel 1}
+\section{Partikelsystem}
 \label{Kapitel_2_-_Unterkapitel_1}
 %
-Er hörte \enquote{leise Schritte} hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben schon hören:
+Partikelsysteme sind in interaktiven Anwendungen wie Computerspiele und in der Postproduktion von Filmen, seien es Real- oder Animationsfilme, allgegenwärtig.
+Man denke an typische Effekte wie Feuer und Rauch, aber auch Flüssigkeiten lassen sich mithilfe von Partikelsystemen realisieren.
 
-\begin{itemize}
-  \item Stop
-  \item Stop
-  \item Stop.
-\end{itemize}
+In seinem im Jahre 1983 veröffentlichtem Papier bezeichnet William T. Reeves diese Arten von Objekten als ‚fuzzy‘. Erstens sind sie zu komplex, um sie als Ganzes mit einem einzigen Mesh darstellen zu können. Daher teilt man das gesamte Objekt in viele kleinere Objekte, also die typischen Primitive wie Punkte, Linien oder Dreiecke. Zweitens bleibt die Form dieser Objekte meistens nicht starr, sie ändert sich im Verlauf der Zeit. Man denke beispielsweise an die Ausbreitung von Rauch. Drittens ist die Ausbreitung der Partikel keinem deterministischem Prozess unterworfen.
 
-Gehetzt sah er sich um. Plötzlich erblickte er den schmalen
-Durchgang. Blitzartig drehte er sich nach rechts und verschwand
-zwischen den beiden Gebäuden. Beinahe wäre er dabei über den
-umgestürzten Mülleimer gefallen, der mitten im Weg lag. Er
-versuchte, sich in der Dunkelheit seinen Weg zu ertasten und
-erstarrte: Anscheinend gab es keinen anderen Ausweg aus diesem
-kleinen Hof als den Durchgang, durch den er gekommen war. Die
-Schritte wurden lauter und lauter, er sah eine dunkle Gestalt um
-die Ecke biegen. Fieberhaft irrten seine Augen durch die
-nächtliche Dunkelheit und suchten einen Ausweg. War jetzt wirklich
-alles vorbei, waren alle Mühe und alle Vorbereitungen umsonst \cite{Abramowski:1991}?
+In unserer Anwendung wird ein Partikelsystem genutzt um den Flugverlauf des Balles darzustellen. 
 
-
-
-    \begin{figure}[t]
-    \centering
-    \subfigure[]
-          {\includegraphics[scale=0.8]{bilder/testbild}\label{fig_testbild_a}
-    }
-    \hspace{0.5cm}%
-    \subfigure[]
-         {\includegraphics[scale=0.8]{bilder/testbild}\label{fig_testbild_b}
-    }
-    \caption[Testbilder]{Testbilder}
-        \label{fig_testbild}
-    \end{figure}
-
-Er presste sich ganz eng an die Wand hinter ihm und hoffte, der
-Verfolger würde ihn übersehen, als plötzlich neben ihm mit kaum
-wahrnehmbarem Quietschen eine Tür im nächtlichen Wind hin und her
-schwang. Könnte dieses der flehentlich herbeigesehnte Ausweg aus
-seinem Dilemma sein? Langsam bewegte er sich auf die offene Tür
-zu, immer dicht an die Mauer gepresst. Würde diese Tür seine
-Rettung werden? Er hörte leise Schritte hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben schon hören. Gehetzt sah er sich
-um. Plötzlich erblickte er den schmalen Durchgang. Blitzartig
-drehte er sich nach rechts und verschwand zwischen den beiden
-Gebäuden.
-
-
-\section{Kapitel 2 - Unterkapitel 2}
-\label{Kapitel_2_-_Unterkapitel_2}
+\subsection{Komponenenten des Partikelsystems}
+\label{Kapitel_2_-_Unterkapitel_1.1}
 %
-Er hörte \enquote{leise Schritte} hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben schon hören:
-   
-	\begin{align*}
-		\mu_{x}(y) =
-		\begin{cases}
-			4^{\alpha_0} & \qquad \textrm{für} \qquad y \leq 3\\
-			4^{\alpha_1} & \qquad \textrm{für} \qquad y > 3
-		\end{cases}
-	\end{align*}
-    
-    mit
-    
-    \begin{align}
-	    \label{gleichung_nummer_2}
-	    \alpha_0 &= -\ln 2 \cdot y - \bar{y}\\
-	    \alpha_1 &= -\ln 2 \cdot y - \bar{y} \textrm{.}
-    \end{align}
+In der Anwendung besteht das Partikelsystem aus zwei Klassen, nämlich dem {\texttt{Particle}} und dem {\texttt{BallParticleRenderable}}.\\
+Die {\texttt{Particle}} Klasse repräsentiert ein Partikel, welches eine Position in Weltkoordinaten, eine Geschwindigkeit, eine Lebensdauer und eine Größe hat. 
+Die {\texttt{BallParticleRenderable}} Klasse ist für die Darstellung und Verwaltung aller im System vorhandenen Partikel zuständig. Zur Verwaltung gehört das emittieren neuer Partikel, das Aktualisieren der aktiven Partikel und Löschen der ‚toten‘ Partikel, also solcher, deren Lebensdauer null erreicht hat. Die Klasse hält Attribute, die die maximale Anzahl der aktiven Partikel beschränkt sowie die Emittiergeschwindigkeit.  Sie hat auch ein Attribut für die Position. Alle neuen Partikel werden relativ zu dieser Position emittiert. Dabei ist die Position des Emittierpunktes auf dem Rand des Balles entgegengesetzt dem Geschwindigkeitsvektor des Balles.
 
-Gehetzt sah er sich um. Plötzlich erblickte er den schmalen
-Durchgang. Blitzartig drehte er sich nach rechts und verschwand
-zwischen den beiden Gebäuden. Beinahe wäre er dabei über den
-umgestürzten Mülleimer gefallen, der mitten im Weg lag. Er
-versuchte, sich in der Dunkelheit seinen Weg zu ertasten und
-erstarrte: Anscheinend gab es keinen anderen Ausweg aus diesem
-kleinen Hof als den Durchgang, durch den er gekommen war. Die
-Schritte wurden lauter und lauter, er sah eine dunkle Gestalt um
-die Ecke biegen. Fieberhaft irrten seine Augen durch die
-nächtliche Dunkelheit und suchten einen Ausweg. War jetzt wirklich
-alles vorbei, waren alle Mühe und alle Vorbereitungen umsonst?
+\subsection{Instanced Rendering}
+\label{Kapitel_2_-_Unterkapitel_1.2}
+%
+Instanced Rendering bezeichnet eine effiziente Variante des Renderns von Objekten die dieselben Renderdaten, also dasselbe Mesh, verwenden, sich aber nur darin unterscheiden wo sie im Weltkoordinatensystem platziert werden. Für die Partikel unseres Partikelsystem trifft dies zu, da jedes Partikel in der Szene als Quad, bestehend aus 6 Vertices, dargestellt wird, auf das eine Textur projiziert wird.
 
-Er presste sich ganz eng an die Wand hinter ihm und hoffte, der
-Verfolger würde ihn übersehen, als plötzlich neben ihm mit kaum
-wahrnehmbarem Quietschen eine Tür im nächtlichen Wind hin und her
-schwang. Könnte dieses der flehentlich herbeigesehnte Ausweg aus
-seinem Dilemma sein? Langsam bewegte er sich auf die offene Tür
-zu, immer dicht an die Mauer gepresst. Würde diese Tür seine
-Rettung werden? Er hörte leise Schritte hinter sich. Das bedeutete
-nichts Gutes. Wer würde ihm schon folgen, spät in der Nacht und
-dazu noch in dieser engen Gasse mitten im übel beleumundeten
-Hafenviertel? Gerade jetzt, wo er das Ding seines Lebens gedreht
-hatte und mit der Beute verschwinden wollte! Hatte einer seiner
-zahllosen Kollegen dieselbe Idee gehabt, ihn beobachtet und
-abgewartet, um ihn nun um die Früchte seiner Arbeit zu
-erleichtern? Oder gehörten die Schritte hinter ihm zu einem der
-unzähligen Gesetzeshüter dieser Stadt, und die stählerne Acht um
-seine Handgelenke würde gleich zuschnappen? Er konnte die
-Aufforderung stehen zu bleiben schon hören. Gehetzt sah er sich
-um. Plötzlich erblickte er den schmalen Durchgang. Blitzartig
-drehte er sich nach rechts und verschwand zwischen den beiden
-Gebäuden.
+Üblicherweise führt man in OpenGL ein Draw-Call durch den Aufruf der Funktion {\texttt{glDrawArrays}} oder {\texttt{glDrawElements}} aus. Um alle aktiven Partikel zu rendern würde man in jedem Frame über die Partikelliste iterieren und für jedes Partikel eine der eben genannten Funktionen aufrufen. Das Problem hierbei ist, das ein häufiges Aufrufen dieser Funktionen zu einem Performanceverlust führt, da die Befehle über den langsamen Peripheriebus zur Grafikkarte gesendet werden müssen. OpenGL bietet mit den Funktionen {\texttt{glDrawArraysInstanced}} und {\texttt{glDrawElementsInstanced}} die Möglichkeit mehrere Instanzen desselben Modells mit nur einem Funktionsaufruf zu rendern.
 
+Aufgrund von Beschränkungen in GLSL ist es nicht möglich ein beliebig großes Array an Model-Matrizen als Uniform-Variable an den Vertexshader zu senden. Daher werden die Model-Matrizen in einem Array-Buffer gespeichert, welcher in jedem Frame aktualisiert werden muss, da sich die Anzahl der Partikel und ihre Positionen mit jedem Frame ändert. 
+Um Instanced Rendering zu nutzen müssen die Model-Matrizen noch als Instance-Variablen deklariert werden. Dies geschieht mit dem Aufruf der Funktion glVertexAttribDivisor, die zwei Parameter hat. Der erste Parameter gibt die Speicheradresse der Variable im Vertexshader-Programm an und der zweite Parameter gibt an wann der nächste Wert aus der Instance-Variablen geholt wird. Der zweite Parameter muss ein Wert ungleich Null sein.  Der Aufruf der Funktion sollte bei der Assoziation der Array-Buffer mit den Variablen des Shader-Programms erfolgen, sprich nach dem Aufruf von glVertexAttribPointer.
+Abbildung zeigt beispielhaft wie rendern mit instance-Variablen abläuft.
+(Hier Abbildung + kurze Erklärung).
 
+\subsection{Billboarding}
+\label{Kapitel_2_-_Unterkapitel_1.3}
+%
+Für ein besseres visuelles Ergebnis werden die Quads, auf die die Partikeltextur projiziert werden, immer orthogonal zur Kamera gerendert. Die Quads erfahren durch die
+Modelview-Matrix keinerlei Rotationen. Um diesen Effekt, der als Bollboarding bezeichnet wird, zu erreichen muss der Rotationsanteil der View-Matrix, also die linke obere 3x3-Matrix, auf die Einheitsmatrix gesetzt werden.
 
+(Hier Abbildung ohne Billboarding)
 
+Rotationsmatrizen sind Orthogonalmatrizen, das heißt, dass ihre Inversen ihren Transponierten entsprechen. Es genügt also beim Berechnen der Modelview-Matrix die obere linke 3x3-Matrix der Model-Matrix durch die Transponierte des Rotationsanteils der View-Matrix zu ersetzen. Da die Partikel in unserem System auch eine Größe haben wird die
+resultierende ModelView-Matrix noch mit einer Skalierungsmatrix multipliziert werden.
 
-
-
+\subsection{Additives Blending}
+\label{Kapitel_2_-_Unterkapitel_1.4}
 %
