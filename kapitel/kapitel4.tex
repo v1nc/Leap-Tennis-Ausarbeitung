@@ -22,15 +22,14 @@ Mithilfe des Geschwindigkeitsvektor lässt sich dann die nächste Position des B
 	    \label{beschleunigung}
 	    Position_{neu} = Position_{alt} + Geschwindikeit_{neu} * t 
     \end{equation}
-Schließlich werden dann basierend auf der neuen Position die Rendering-Informationen aktualisert (s. Kapitel --/--) 
-
+Schließlich werden dann basierend auf der neuen Position die Rendering-Informationen aktualisert. 
 
 
 \section{Kapitel 3 - Reflexion}
 \label{Kapitel_4_-_Unterkapitel_2}
 
-Nachdem die Positionen aktualisert wurden wird geprüft, ob an den neuen Positionen Kollisionen aufgetreten sind. Dies geschieht in der CollisionResolver-Klasse. Die Funktion resolveCollisions(Ball* ball, Rackets* rackets, Box* box) wird von der Hauptschleife aus aufgerufen und überprüft zuerst die Kollision des Balls mit der Box bzw. mit den 6 Ebenen der Box und dann die Kollision mit dem Schläger.
-Die Ebenen wurden wie erwähnt in einer der Hesseschen Normalform ähnlichen Darstellung gespeichert, sodass der Abstand des Balls zu einer Ebene leicht berechnet werden kann.
+Nachdem die Positionen aktualisert wurden, wird geprüft, ob an den neuen Positionen Kollisionen aufgetreten sind. Dies geschieht in der CollisionResolver-Klasse. Die Funktion resolveCollisions(Ball* ball, Rackets* rackets, Box* box) wird von der Hauptschleife aus aufgerufen und überprüft zuerst die Kollision des Balls mit der Box bzw. mit den 6 Ebenen der Box und dann die Kollision mit dem Schläger.
+Die Ebenen werden in einer Hesseschen Normalform ähnlichen Darstellung gespeichert, sodass der Abstand des Balls zu einer Ebene leicht berechnet werden kann.
 
 \begin{figure}[h]
     \subfigure[]
@@ -41,6 +40,50 @@ Die Ebenen wurden wie erwähnt in einer der Hesseschen Normalform ähnlichen Dar
 \end{figure} 
 
 Da die Hessesche Normalform wie folgt aussieht,$ E: \vec x \cdot \vec n  = d $, und d der Abstand zum Ursprung ist, lässt sich die Formel umformen zu $ E: \vec x \cdot \vec n  - d = 0$. Diese Formel ist erfüllt wenn x auf der Ebene liegt. Ersetzt man also 0 durch eine Variable c, kann der Abstand von Punkt x zur Ebene genau ermittelt werden. In unserem Fall erlauben wir auch negative Abstände; negative Abstände entstehen dann durch Ballpositionen, die hinter der Ebene liegen (entgegen der Richtung des Normalvektors).
-Der Abstand des Ballmittelpunkts zur Ebene ist also $c = \vec p\cdot \vec n - d $.
+Der Abstand des Ballmittelpunkts zur Ebene ist also $c = \vec p\cdot \vec n - d $. Somit lässt sich eine Kollision feststellen, wenn der Abstand zur Ebene kleiner als der Radius des Balls ist.
 
-Damit der Ball aber bei zu hohen Gechwindigkeiten nicht hinter die Ebene gelangt und die Kollision nicht erkannt wird, wurde eine Kollisionsüberprüfung nach [hier Literatur einfügen] implementiert, die genau dies verhindern soll.
+Damit der Ball bei zu hohen Gechwindigkeiten nicht hinter die Ebene gelangt und die Kollision nicht erkannt wird, wurde eine Kollisionsüberprüfung nach [hier Literatur einfügen] implementiert, die genau dies verhindern soll. Denn bei dieser Methode wird der Ball auf eine Position vor der Ebene zurückgesetzt, falls er tatsächlich hinter die Ebene gelangt. Das Prinzip ist wie folgt:
+
+Es werden immer die letzten beiden Positionen des Balls gespeichert ($C_0$, $C_1$) und die Distanzen zu beiden Zeitpunkten nach schon beschriebener Weise berechnet ($d_0, d_1$).
+Befindet sich $C_0$ vor der Ebene und $C_1$ hinter der Ebene bzw. ist $d_0$ positiv und $d_1$ negativ, so wird die neue Position des Balls zwischen diesen beiden Punkten interpoliert (s. Formel \ref{interpolEquation1} und \ref{interpolEquation2}). 
+\begin{equation}	
+\label{interpolEquation1}
+	u = \frac{d_0 - r}{d_0 - d_1}
+\end{equation}
+\begin{equation}	
+\label{interpolEquation2}
+	C_{neu} = (1-u)C_0 + uC_1
+\end{equation}
+
+\begin{figure}[h]
+   \begin{center}
+       \includegraphics[scale=0.5]{bilder/interpolation}\label{fig_interpolation}
+   \end{center}
+    
+    \caption[Testbilder]{Interpolation der Ballposition bei vollständigem Durchstoßen der Ebene}
+        \label{fig_interpol}
+\end{figure} 
+
+Ist der Ball nicht vollständig hinter die Ebene geflogen - d.h. es gilt $d_1<0$ und $|d_1|<Radius $ - dann wird der Ball um $Radius - |d_1|$ in Richtung des NormalenVektors der Ebene verschoben.
+
+Die Kollisionserkennung mit dem Schläger verläuft nach ähnlichem Schema ab. Auch die Fläche des Schlägers wird als Ebene gespeichert, sodass auch hier nur der Abstand des Balls zur Ebene berechnet werden muss, der dann bei tatsächlicher Kollision betragsmäßig kleiner als der Radius ist. Jedoch ist Der Schläger keine unendlich große Fläche wie die  Boxwände, sondern ist auf eine bestimmte Kreisfläche begrenzt. D.h. es muss eine zusätzliche Abfrage gemacht werden, die überprüft ob der Ball eine entsprechend kleine Distanz zum Schlägermittelpunkt besitzt.
+Wenn $\vec{r}$ die Position des Schlägermittelpunkts, $\vec{b}$ die Position des Balls und $R$ den Radius des Schlägers beschreibt dann gilt bei Kollision:
+\begin{equation}
+	|\vec{r}\cdot\vec{b}| <= R
+\end{equation}
+
+\begin{figure}[h]
+   \begin{center}
+    \includegraphics[scale=0.4]{bilder/collisionRacket}\label{fig_colRacket}
+   \end{center} 
+    \caption[Testbilder]{Kollisionserkennung zwischen Schläger und Ball}
+        \label{fig_colRacket2}
+\end{figure} 
+
+Ist eine Kollision aufgetreten, so wird der Ball entsprechend des Reflexionsgesetzes reflektiert (s. \ref{reflexion}). Damit der Ball bei einem Aufprall an Geschwindigkeit verliert, kann man den Faktor 2 in der Formel entsprechend verringern.
+
+\begin{equation}	
+\label{interpolEquation2}
+	\vec{v}_{neu} = 2* \vec{n}\cdot\vec{v} + \vec{v}
+	\label{reflexion}
+\end{equation}
