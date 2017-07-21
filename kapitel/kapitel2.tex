@@ -36,6 +36,26 @@ Die Klassen der eingangs erwähnten darstellbaren Objekte, also {\texttt{Ball}},
 %
 Für das Erstellen der Modelle, die in der Anwendung zu sehen sind, wurde keine Modelling-Software verwendet. Da es sich bei den Modellen um einfache geometrische Objekte wie Kugeln, Kreise, und Rechtecke handelt, werden die Render-Daten, also Vertizes, Normale, Farben und ggfs. Indizes für die Faces, innerhalb der Renderables erzeugt.
 
+\section{Kamerabewegung}
+%
+Um die Flugbahn des Balles besser einschätzen zu können und um ein besseres Gefühl für die
+Position des Schlägers innerhalb des Spielfeldes zu erhalten, bewegt sich die Kamera bei Bewegung des Schlägers mit. Die Kamerabewegung ist in Abbildung \ref{fig:camera} dargestellt.
+
+\begin{figure}[t]
+	\centering
+	\subfigure[Kamera in neutraler Position]
+	{\includegraphics[scale=0.4]{bilder/cameraNeutral}\label{fig:cameraNeutral}
+	}
+	\vspace{1.5cm}%
+	\subfigure[Kamera bei Bewegung des Schlägers nach rechts oben]
+	{\includegraphics[scale=0.4]{bilder/cameraMoved}\label{fig:cameraMoved}
+	}
+	\vspace{-1.5cm}
+	\caption[Weitere Testbilder]{Kameraposition bei Bewegung des Schlägers}
+	\label{fig:camera}
+\end{figure}
+
+In jedem Durchlauf der Hauptschleife wird der Kamera nach dem Aktualisieren der Position des Schlägers die neue Position mitgeteilt, wobei nur die $x$- und $y$-Koordinate in die neue Kameraposition mit einfließen. Die Kamera passt dann die View-Matrix an. Der Bewegungsbereich der Kamera ist so eingeschränkt, dass , wenn der Schläger außerhalb dieses Bewegungsbereiches bewegt wird, die Kamera innerhalb des Spielfelds verbleibt.
 \section{Partikelsystem}
 \label{Kapitel_2_-_Unterkapitel_2}
 %
