@@ -5,19 +5,36 @@
 \chapter{Graphische Ausgabe}
 \label{Kapitel 2}
 %
-(Hier kurze Einleitung und Bild der Spielszene)
+In der graphischen Ausgabe der Anwendung sollen alle Objekte dargestellt werden. Zu den darstellbaren Objekten gehören der Ball, der Schläger, das Spielfeld und eine Zielscheibe, wie in Abbildung \ref{fig:gameScene} zu sehen ist.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\linewidth]{bilder/gameScene}
+	\caption{Szene aus der Anwendung}
+	\label{fig:gameScene}
+\end{figure}
 
 
 \section{Rendering Architektur}
 \label{Kapitel_2_-_Unterkapitel_1}
 %
-(Hier Bild des Rendering-Systems und kurze Erklärungen zu den einzelnen Renderables)
+Der in Abbildung \ref{fig:renderingSystem} dargestellte Ausschnitt des Klassendiagramms (siehe Anhang \ref{anhangA}) zeigt die Klassen des Rendering-Systems und ihre Beziehungen zueinander.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\linewidth]{bilder/RenderingSystem}
 	\caption{Klassen des Rendering-Systems}
 \label{fig:renderingSystem}
 \end{figure}
+
+Der {\texttt{Renderer}} ist die zentrale Klasse des Rendering-Systems und verwaltet eine Liste von {\texttt{Renderable}}s, sowie die {\texttt{Camera}}, die bei jedem Render-Call an die {\texttt{Renderable}}s übergeben wird, damit diese sich die View- und Projection-Matrix holen und gerendert werden können. Damit ein {\texttt{Renderable}} gerendert werden kann besitzt es einen eigenen Shader.
+
+Die Klassen der eingangs erwähnten darstellbaren Objekte, also {\texttt{Ball}}, {\texttt{Racket}}, {\texttt{Box}} und {\texttt{Scorefield}}, enthalten Member, die das {\texttt{Renderable}}-Interface implementieren. Zu den Klassen die das Interface implementieren gehören {\texttt{BallRenderable}}, {\texttt{BallParticleRenderable}},
+{\texttt{BoxRenderable}}, {\texttt{RacketRenderable}} und {\texttt{ScorefieldRenderable}}. Innerhalb eines solchen Renderables werden bei der Initialisierung die Buffer für die Render-Daten erzeugt, es werden die Render-Daten an die Buffer übergeben und es wird ein Shader-Programm erzeugt. 
+
+\section{3D-Modelle der Renderables}
+%
+Für das Erstellen der Modelle, die in der Anwendung zu sehen sind, wurde keine Modelling-Software verwendet. Da es sich bei den Modellen um einfache geometrische Objekte wie Kugeln, Kreise, und Rechtecke handelt, werden die Render-Daten, also Vertizes, Normale, Farben und ggfs. Indizes für die Faces, innerhalb der Renderables erzeugt.
 
 \section{Partikelsystem}
 \label{Kapitel_2_-_Unterkapitel_2}
