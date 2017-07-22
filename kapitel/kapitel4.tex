@@ -80,10 +80,31 @@ Wenn $\vec{r}$ die Position des Schlägermittelpunkts, $\vec{b}$ die Position de
         \label{fig_colRacket2}
 \end{figure} 
 
-Ist eine Kollision aufgetreten, so wird der Ball entsprechend des Reflexionsgesetzes reflektiert (s. \ref{reflexion}). Damit der Ball bei einem Aufprall an Geschwindigkeit verliert, kann man den Faktor 2 in der Formel entsprechend verringern.
+Ist eine Kollision aufgetreten, so kann der Ball entsprechend der Formel \ref{reflexion}) reflektiert werden.
 
 \begin{equation}	
-\label{interpolEquation2}
-	\vec{v}_{neu} = 2* \vec{n}\cdot\vec{v} + \vec{v}
-	\label{reflexion}
+\label{reflexion}
+	\vec{v}_{neu} = 2* \langle \vec{n},\vec{-v} \rangle * \vec{n} + \vec{v}
 \end{equation}
+
+Die Formel lässt sich wie folgt herleiten:
+
+Zunächst muss der Einfallsvektor des Balls auf den Normalenvektor projiziert werden (gesucht ist also eine Faktor $k$, sodass $k\vec{n}$ eine Projektion von $-\vec{v}$ nach $\vec{n}$ ist). Der Einfallsvektor wird deswegen invertiert, weil ein Ausfallsvektor gesucht wird, der nicht wie der Einfallsvektor in Richtung der Ebene zeigt. $k$ lässt sich mithilfe des Skalarprodukts $\langle\vec{n},-\vec{v}\rangle$ berechnen, da der Normalenvektor einer Ebene in unserer Implementierung immer normiert gespeichert wird.
+
+
+
+    \begin{figure}
+	\begin{center}
+    \subfigure[Projektion des Einfallsvektors auf den Normalvektor]
+          {\includegraphics[scale=0.8]{bilder/reflexion1}\label{fig_reflexion_a}
+    }
+    \hspace{1.5cm}%
+    \subfigure[Zusammensetzung des Ausfallsvektors]
+         {\includegraphics[scale=0.8]{bilder/reflexion2}\label{fig_reflexion_b}
+    }
+    \caption[Weitere Testbilder]{Berechnung des neuen Vektors bei einer Reflexion an einer Ebene mit Normalenvektor}
+        \label{fig_reflexion}
+	\end{center}
+    \end{figure}
+    
+Die Länge des Projizierten Vektors $k\vec{n}$ muss nun, wie in Abbildung \ref{fig_reflexion} zu sehen, verdoppelt werden und zum Einfallsvektors $\vec{v}$ addiert werden. Das Ergebnis ist dann der Ausfallwinkel in entsprechender Richtung. Soll der Ausfallsvektor betragsmäßig kleiner sein (d.h. der Ball soll z.B. beim Abprallen an Wänden an Geschwindigkeit verlieren), kann der Vorfaktor 2 entsprechend verringert werden (In unserer Implementierung beträgt der Wert: 1,75).
