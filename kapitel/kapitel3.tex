@@ -5,7 +5,7 @@
 \chapter{Steuerung}
 \label{Kapitel 3}
 %
-Die Leap Motion bietet über ihre Tracking API\footnote{ siehe https://developer.leapmotion.com/documentation/cpp/devguide/Leap\_Guides2.html} auf einzelne Daten der durch den Sensor detektierten Hände zuzugreifen. Da der Schläger im Spiel mit der rechten Hand gesteuert wird, werden nur die Position, der Normalenvektor der Handfläche und der Geschwindigkeitsvektor der rechten Hand benötigt.
+Die Leap Motion bietet über ihre Tracking API\footnote{ siehe https://developer.leapmotion.com/documentation/cpp/devguide/Leap\_Guides2.html} die Möglichkeit auf einzelne Daten der durch den Sensor detektierten Hände zuzugreifen. Da der Schläger im Spiel mit der rechten Hand gesteuert wird, werden nur die Position, der Normalenvektor der Handfläche und der Geschwindigkeitsvektor der rechten Hand benötigt.
 
 Die Position der Hand wird zur Bestimmung der Position des Schlägers in der 3D-Szene verwendet. Der Normalenvektor wird zum einen für die Ausrichtung des Schläger-Modells und zum anderen für die Reflexion des Balles bei Kollision mit dem Schläger verwendet. Kommt es zwischen dem Ball und dem Schläger zur Kollision, so wird der Geschwindigkeitsvektor der Hand auf den Geschwindigkeitsvektor des Balles addiert.
 
