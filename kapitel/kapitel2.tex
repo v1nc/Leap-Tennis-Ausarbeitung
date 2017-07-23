@@ -18,23 +18,96 @@ In der graphischen Ausgabe der Anwendung sollen alle Objekte dargestellt werden.
 \section{Rendering Architektur}
 \label{Kapitel_2_-_Unterkapitel_1}
 %
-Der in Abbildung \ref{fig:renderingSystem} dargestellte Ausschnitt des Klassendiagramms (siehe Anhang \ref{anhangA}) zeigt die Klassen des Rendering-Systems und ihre Beziehungen zueinander.
+Der in Abbildung \ref{fig:renderingSystem} dargestellte Ausschnitt des Klassendiagramms (siehe Anhang \ref{anhangA}) zeigt die zentralen Klassen des Rendering-Systems und ihre Beziehungen zueinander.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\linewidth]{bilder/RenderingSystem}
 	\caption{Klassen des Rendering-Systems}
-\label{fig:renderingSystem}
+	\label{fig:renderingSystem}
 \end{figure}
 
-Der {\texttt{Renderer}} ist die zentrale Klasse des Rendering-Systems und verwaltet eine Liste von {\texttt{Renderable}}s, sowie die {\texttt{Camera}}, die bei jedem Render-Call an die {\texttt{Renderable}}s übergeben wird, damit diese sich die View- und Projection-Matrix holen und gerendert werden können. Damit ein {\texttt{Renderable}} gerendert werden kann besitzt es einen eigenen Shader.
+Die Klassen, die die Spielobjekte repräsentieren, also {\texttt{Ball}}, {\texttt{Racket}}, {\texttt{Box}} und {\texttt{Scorefield}}, enthalten Member, die das {\texttt{Renderable}}-Interface implementieren und für die graphische Darstellung zuständig sind. Die Klassen die das Interface implementieren sind:
 
-Die Klassen der eingangs erwähnten darstellbaren Objekte, also {\texttt{Ball}}, {\texttt{Racket}}, {\texttt{Box}} und {\texttt{Scorefield}}, enthalten Member, die das {\texttt{Renderable}}-Interface implementieren. Zu den Klassen die das Interface implementieren gehören {\texttt{BallRenderable}}, {\texttt{BallParticleRenderable}},
-{\texttt{BoxRenderable}}, {\texttt{RacketRenderable}} und {\texttt{ScorefieldRenderable}}. Innerhalb eines solchen Renderables werden bei der Initialisierung die Buffer für die Render-Daten erzeugt, es werden die Render-Daten an die Buffer übergeben und es wird ein Shader-Programm erzeugt. 
+\begin{itemize}
+	\setlength\itemsep{0.05em}
+	\item {\texttt{BallRenderable}} und {\texttt{BallParticleRenderable}} für den Ball
+	\item {\texttt{RacketRenderable}} für den Schläger
+	\item {\texttt{BoxRenderable}} für das Spielfeld
+	\item {\texttt{ScorefieldRenderable}} für die Zielscheibe 	
+\end{itemize}
+
+Jedes dieser Renderables kümmert sich bei der seiner Initialisierung um die Erzeugung der Render-Daten, der Buffer, die die Render-Daten halten, und des Shader-Programms. Der Renderer selbst hält ein {\texttt{Camera}}-Objekt und eine Liste der Renderables und delegiert den Render-Call aus der Hauptschleife an die einzelnen Renderables. Dabei wird das {\texttt{Camera}}-Objekt an die Renderables übergeben, sodass diese sich die View- und Projection-Matrix holen können. Bei der Aktualisierung eines Spielobjekts in der Hauptschleife gibt das Spielobjekt die neuen Daten an sein Renderable weiter, damit dieses die Model-Matrix aktualisieren kann. Eine Ausnahme bildet das {\texttt{BallParticleRenderable}}, das für jedes Partikel eine eigene Model-Matrix erzeugen muss und in Abschnitt \ref{Kapitel_2_-_Unterkapitel_2} genauer erläutert wird.
 
 \section{3D-Modelle der Renderables}
 %
 Für das Erstellen der Modelle, die in der Anwendung zu sehen sind, wurde keine Modelling-Software verwendet. Da es sich bei den Modellen um einfache geometrische Objekte wie Kugeln, Kreise, und Rechtecke handelt, werden die Render-Daten, also Vertizes, Normale, Farben und ggfs. Indizes für die Faces, innerhalb der Renderables erzeugt.
+
+\subsection{Spielfeld}
+%
+In der graphischen Ausgabe hat das Spielfeld die Form eines Quaders. Intern werden die einzelnen Wände als Ebenen repräsentiert. Da die {\texttt{Plane}}-Klasse eine Ebene in der Hesseschen Normalform\footnote{Näheres dazu in Kapitel \ref{Kapitel 4}} abspeichert, können aus den Abstandswerten der einzelnen Ebenen leicht die Koordinaten für die 8 Vertices des Modells gewonnen werden.
+
+\subsection{Schläger}
+%
+Der Schläger ist in der graphischen Ausgabe ein regelmäßiges Polygon. Daher reduziert sich das Problem der Erzeugung der Vertices auf die Berechnung von Koordinaten auf dem Einheitskreis. Algorithmus \ref{algo_circle} enthält einen Ausschnitt aus dem Programmcode als Pseudocode.
+
+\begin{algorithm}[t]
+	\centering
+	\caption{Algorithmus für die Erzeugung des Schläger-Modells} \label{algo_circle}
+	\begin{algorithmic}
+		\REQUIRE Anzahl der Kreissektoren $s$
+		\ENSURE Vertices $V$
+		\STATE $\Delta\theta := 2*\pi/s$
+		\STATE new Array $V[s+1]$
+		\STATE $V[0] := (0,0,0)$
+		\FOR{$i := 0$ \TO $i < s$}
+		\STATE $V[i+1] := (\cos(i*\Delta\theta), \sin(i*\Delta\theta), 0)$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+Für ein besseres visuelles Ergebnis lässt sich über den Parameter $s$ die Anzahl der Vertices steuern, um das Schläger-Modell mehr nach einem Kreis aussehen zu lassen. In der Anwendung besteht Das Schläger-Modell aus 21 Vertices.
+
+\subsection{Ball}
+%
+Die Erzeugung der Vertices für das Ball-Modell lässt sich sich auf die Berechnung von Koordinaten auf der Kugeloberfläche der Einheitskugel zurückführen. Das Modell wird dabei in die beiden Pole und eine bestimmte Anzahl an Ringen, auf denen sich Vertices befinden, geteilt. Jeder Ring hat dabei die gleiche Anzahl an Vertices. Algorithmus \ref{algo_sphere} enthält einen Ausschnitt des Programmcodes als Pseudocode.
+
+\begin{algorithm}[t]
+	\centering
+	\caption{Algorithmus für die Erzeugung des Ball-Modells} \label{algo_sphere}
+	\begin{algorithmic}
+		\REQUIRE Anzahl der Ringe $r$, Anzahl der Punkte pro Ring $p$
+		\ENSURE Vertices $V$
+		\STATE $\Delta\phi := 2*\pi/p$
+		\STATE $\Delta\theta := \pi/(s + 1)$
+		\STATE $\phi := 0$
+		\STATE $\theta := 0$
+		\STATE new Array $V[2 + r * p]$
+		\STATE $V[0] := (0,0,1)$
+		\STATE $V[1 + r * p] := (0,0,-1)$
+		\STATE $offset := 0$
+		\FOR{$i := 1$ \TO $i \leq r$}
+		\STATE $\theta := \theta +\Delta\theta$
+			\FOR{$j := 0$ \TO $j < p$}
+			\STATE $\phi := \phi +\Delta\phi$
+			\STATE $V[i + j + offset] := (\sin(\theta)*\cos(\phi), sin(\theta) * \sin(\phi), \cos(\theta))$
+			\ENDFOR
+			\STATE $\phi := 0$
+			\STATE $offset := offset + p - 1$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+Auch hier lässt dich mit höheren Werten für die Parameter $p$ und $r$ ein besseres visuelles Ergebnis erzielen. In der Anwendung hat das Ball-Modell 15 Ringe mit jeweils 10 Vertices, also insgesamt 152 Vertices.
+
+\iffalse
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{bilder/ballWireframe}
+	\caption{Ball im Wireframe}
+	\label{fig:ballWireframe}
+\end{figure}
+\fi
 
 \section{Kamerabewegung}
 %
@@ -72,12 +145,12 @@ In der Anwendung wird ein Partikelsystem genutzt um den Flugverlauf des Balles d
 In der Anwendung besteht das Partikelsystem aus zwei Klassen, nämlich dem {\texttt{Particle}} und dem {\texttt{BallParticleRenderable}}.
 
 Die {\texttt{Particle}} Klasse repräsentiert ein Partikel, welches eine Position in Weltkoordinaten, eine Geschwindigkeit, eine Lebensdauer und eine Größe hat. 
-Die {\texttt{BallParticleRenderable}} Klasse ist für die Darstellung und Verwaltung aller im System vorhandenen Partikel zuständig. Zur Verwaltung gehört das emittieren neuer Partikel, das Aktualisieren der aktiven Partikel und Löschen der ‚toten‘ Partikel, also solcher, deren Lebensdauer null erreicht hat. Die Klasse hält Attribute, die die maximale Anzahl der aktiven Partikel beschränkt sowie die Emittiergeschwindigkeit.  Sie hat auch ein Attribut für die Position. Alle neuen Partikel werden relativ zu dieser Position emittiert. Dabei ist die Position des Emittierpunktes auf dem Rand des Balles entgegengesetzt dem Geschwindigkeitsvektor des Balles.
+Die {\texttt{BallParticleRenderable}} Klasse ist für die Darstellung und Verwaltung aller im System vorhandenen Partikel zuständig. Zur Verwaltung gehört das emittieren neuer Partikel, das Aktualisieren der aktiven Partikel und Löschen der ‚toten‘ Partikel, also solcher, deren Lebensdauer null erreicht hat. Die Klasse hält Attribute, die die maximale Anzahl der aktiven Partikel beschränkt sowie die Emittiergeschwindigkeit.  Sie hat auch ein Attribut für die Position. Alle neuen Partikel werden relativ zu dieser Position emittiert. Dabei ist die Position des Emittierpunktes auf dem Rand des Balles entgegengesetzt dem Geschwindigkeitsvektor des Balles. Da die Position des Emittierpunktes an die Position des Balles gekoppelt ist, wird bei jedem Update des {\texttt{Ball}}-Objekts die neue Position an den {\texttt{BallParticleRenderable}} weitergegeben.
 
 \subsection{Instanced Rendering}
 \label{Kapitel_2_-_Unterkapitel_2.2}
 %
-Instanced Rendering bezeichnet eine effiziente Variante des Renderns von Objekten die dieselben Renderdaten verwenden, sich aber nur darin unterscheiden, wo sie im Weltkoordinatensystem platziert werden. Für die Partikel unseres Partikelsystems trifft dies zu, da jedes Partikel, wie bereits erwähnt, ein einfaches Quad ist und sich nur in seiner Position und Größe unterscheidet.
+Instanced Rendering bezeichnet eine effiziente Variante des Renderns von Objekten die dieselben Renderdaten verwenden, sich aber nur darin unterscheiden, wo sie im Weltkoordinatensystem platziert werden. Für die Partikel des Partikelsystems trifft dies zu, da jedes Partikel, wie bereits erwähnt, ein einfaches Quad ist und sich nur in seiner Position und Größe unterscheidet.
 
 Die Effizienz dieser Methode rührt daher, dass zum Rendern der Partikel nun nicht mehr über die Liste aller Partikel iteriert wird und für jedes Partikel ein Draw-Call getätigt wird. Stattdessen wird pro Frame nur ein einziger Draw-Call getätigt, das heißt, dass nur ein Befehl über den langsamen Peripheriebus zur Grafikkarte gesendet werden muss. Für das Instanced Rendering bietet OpenGL die Funktionen {\texttt{glDrawArraysInstanced}} und {\texttt{glDrawElementsInstanced}}.
 
@@ -91,7 +164,7 @@ Um nicht zu sehr in den technischen Details zu versinken, soll nur kurz schemati
 	\label{fig:vao}
 \end{figure}
 
-Wie an Abbildung \ref{fig:vao} zu sehen ist, befinden sich die Vertizes $v_1\dotsc v_6$ , die Texturkoordinaten $t_1\dotsc t_6$ und die Model-Matrizen $M_1\dotsc M_n$, wobei $\mathnormal{n}$ die Anzahl der aktiven Partikel ist, in ihren eigenen Array-Buffer. Die Vertices und Texturkoordinaten ändern sich nicht. Die Model-Matrizen hingegen werden bei jedem Update der Partikel neu erzeugt und an den Array-Buffer gesendet.
+Wie an Abbildung \ref{fig:vao} zu sehen ist, befinden sich die Vertizes $v_1\dotsc v_6$ , die Texturkoordinaten $t_1\dotsc t_6$ und die Model-Matrizen $M_1\dotsc M_n$, wobei $\mathnormal{n}$ die Anzahl der aktiven Partikel ist, in ihren eigenen Array-Buffer des VAOs des {\texttt{BallParticleRenderable}}-Objekts. Die Vertices und Texturkoordinaten ändern sich nicht. Die Model-Matrizen hingegen werden bei jedem Update der Partikel neu erzeugt und an den Array-Buffer gesendet.
 
 Um Instanced Rendering zu nutzen muss der Array-Buffer der Model-Matrizen als Instance-Attribut des Vertex-Shaders deklariert werden. Dies sollte bei der Assoziation der Array-Buffer mit den Attributen des Vertex-Shader-Programms geschehen.
 Beim Rendern einer Instanz werden nun alle Vertexdaten und Texturkoordinaten, die keine Instanz-Variablen sind, und die jeweilige Model-Matrix der Instanz verwendet.

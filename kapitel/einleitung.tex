@@ -4,35 +4,37 @@
 
 \chapter{Einleitung}
 \label{Einleitung}
-Das vorliegende Arbeit beschäftigt sich mit dem Abschlussprojekt des Visual Computing Fachprojekts zur Realisierung eines virtuellen Tennis Spiels, bei dem 
-die Steuerung durch Leap Motion umgesetzt wird.
-In dem Projekt wurden einige Projekte, welche zuvor im Fachprojekt vorgestellt wurden, kombiniert. Hierbei wurde vor allem Leap Motion für die Realisierung des Schlägers genutzt und des weiteren
-Grundkenntnisse in OpenGL um die benötigten Objekte zu visualisieren.
-
-
-
+%
+Die vorliegende Arbeit beschäftigt sich mit dem Abschlussprojekt des Visual Computing Fachprojekts zur Realisierung eines virtuellen Tennis-Spiels, bei dem die Steuerung mithilfe der Leap Motion\footnote{Sensor, der in der Lage ist die Hände des Benutzers zu erkennen} umgesetzt wird. Zur Umsetzung des Projekts wurden einige der Ergebnisse der Projektaufgaben der ersten Phase des Fachprojekts kombiniert und als Grundgerüst verwendet. Hierzu gehören insbesondere die Projektaufgaben, die sich mit der Leap Motion und Qt\footnote{Framework zur Implementierung von GUIs (Graphical User Interfaces)} befassen.
 
 \section{Motivation}
 \label{Motivation_und_Hintergrund}
 % 
-Für die letzte Phase des Fachprojekts wurde die Vorgabe gestellt, ein eigenständiges Projekt in einer kleinen Gruppe zu entwickeln, wobei wir dabei
-das bereits Gelernte kreativ einsetzen sollten, damit die erlernten Kompentenzen aufgefrischt und gefestigt werden.
-Die Idee für die wir uns nach kurzer Beratungszeit entschieden haben sollte ein Tennis Spiel sein, wobei die Hand als Schläger fungiert und die Erkennung der Hand
-durch Leap Motion gewährleistet wird. 
+Für die letzte Phase des Fachprojekts wurde die Vorgabe gestellt, ein eigenständiges Projekt in einer kleinen Gruppe zu entwickeln und dabei die während der ersten Phase des Fachprojekts erworbenen Kompetenzen kreativ einzusetzen. Für das Projekt wurde die Verwendung eines der in den Projektaufgaben vorgestellten Eingabegeräte und eine graphische Ausgabe gefordert.
+Über das Erwerben von Kompetenzen im Bereich der Softwareentwicklung und das Kennenlernen von Technologien im Bereich des Visual Computing hinaus, sollte auf Grundlage des entwickelten Projekts das Verfassen einer wissenschaftlichen Arbeit eingeübt werden.
+
+\iffalse
+Die Idee für die wir uns nach kurzer Beratungszeit entschieden haben sollte ein Tennis Spiel sein, wobei die Hand als Schläger fungiert und die Erkennung der Hand durch Leap Motion gewährleistet wird. 
 Das Projekt besteht aus hinreichend vielen Problemen, welche wir gleichmäßig aufteilten. Die Teilprobleme haben unterteilt in die physikalischen Einflüsse, wobei
-wir großen Wert auf einen realistischen Spielfluss gelegt haben, das Rendering, um die gebrauchten Objekte zu erstellen und die Steuerung, welches vorallem die korrekte Erfassung der Hand
+wir großen Wert auf einen realistischen Spielfluss gelegt haben, das Rendering, um die gebrauchten Objekte zu erstellen und die Steuerung, welches vor allem die korrekte Erfassung der Hand
 beinhaltete. 
 Die Regeln des Spieles sind sehr schnell zu erlernen und sprechen jede mögliche Zielgruppe an, da die Regeln leicht verständlich und die Steuerung sehr intuitiv sind. %deswegen haben wir großen Wert auf ein an
+\fi
 
-
-
-
-\newpage
 \section{Problemstellung}
 \label{Aufbau_der_Arbeit}
 %
+Für die Realisierung des Tennis-Spiels ergeben sich die folgenden 3 Teilprobleme:
+\begin{enumerate}
+	\item Für die Steuerung muss die Leap Motion in die Anwendung integriert werden. Die Daten, die der Sensor liefert, werden zum einen für die Darstellung des Schlägers und zum anderen für die Kollisionsberechnung benötigt. Durch die Nutzung der Leap Motion soll dem Spieler das Gefühl vermittelt werden einen Schläger in der Hand zu halten mit dem er die Flugrichtung des Balles kontrolliert.
+	\item Für die graphische Ausgabe müssen die 3D-Modelle der einzelnen Spielobjekte erzeugt und eine sinnvolle Rendering-Architektur implementiert werden. Wichtig dabei ist, dass der Spieler stets eine klare Übersicht über das Spielgeschehen hat.
+	\item Für ein möglichst realitätsnahes Spielgefühl muss der Ball grundlegenden physikalischen Einflüssen unterlegen sein. Dazu gehört auch eine korrekte Auflösung von Kollisionen des Balles mit den restlichen Objekten im Spiel.
+\end{enumerate}
 
-Um das Tennis Spiel zu realisieren haben wir uns intensiv mit folgenden drei Teilproblemem beschäfigt. Da sie teilweise nicht aufeinander aufbauten, hat es sich angeboten parallel an denen zu arbeiten.\\
+\section{Regeln und Ziel des Spiels}
+Das Ziel des Spiels ist es, eine möglichst hohe Punktzahl zu erreichen. Ein Punkt wird vergeben, wenn der Ball eine sich im Spielfeld befindliche Zielscheibe trifft, die nach jedem Treffer zufällig an einen anderen Ort gesetzt wird. Nach jeweils einer bestimmten Anzahl an Treffern wir dem Spieler ein Lebenspunkt gutgeschrieben. Das Ende des Spiels ist erreicht, wenn der Spieler all seine Lebenspunkte verloren hat. Ihm wird ein Lebenspunkt abgezogen, wenn der Ball hinter den Schläger fliegt oder der Ball manuell vom Spieler zurückgesetzt wird. 
+
+\iffalse
 Für die Steuerung des Spiels musste der Leap Motion Kontroller korrekt angebunden werden, sodass zusätzliche Daten bezüglich der Hand gewonnen werden konnte, welche beispielweise für die Ausrichtung des Schlägers wichtig war.
 Durch Anbindung des Leap Motion Kontrollers haben wir das Ziel verfolgt die Intuitivität des Spielers anzusprechen, da er zum Spielen lediglich seine Hand braucht.\\
 Die Objekte, welche visualisiert werden sollten, mussten gerendert werden. Dies beinhaltete unter anderem eine Box in der das Spiel abläuft, einen Ball und einen Schläger. Außerdem wurden
@@ -40,5 +42,4 @@ einige Extras eingebunden, um dem ganzen Projekt mehr Farbe zu geben.\\
 Der dritte Themenbereich umfasst die ganze Physik und die Berechnungen welche diese mit sich führt. Dabei haben wir Wert darauf gelegt Faktoren die in der Realität vorhanden sind, wie 
 zum Beispiel die Schwerkraft oder ähnliches in unser Projekt zu implementieren, um dem Spieler eben dieses Gefühl von Intuitivität und Realität wiederzugeben. 
 Die Kollisionserkennung und Berechnung fällt unter diesen Teilbereich, wobei wieder versucht wurde die genannten Faktoren zu realisieren.
-
-
+\fi
