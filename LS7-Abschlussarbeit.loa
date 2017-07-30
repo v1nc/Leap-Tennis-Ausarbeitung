@@ -1,6 +1,9 @@
 \select@language {german}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {algorithm}{\numberline {2.1}{\ignorespaces Algorithmus f\IeC {\"u}r die Erzeugung des Schl\IeC {\"a}ger-Modells\relax }}{6}{algorithm.2.1}
+\contentsline {algorithm}{\numberline {2.2}{\ignorespaces Algorithmus f\IeC {\"u}r die Erzeugung des Ball-Modells\relax }}{6}{algorithm.2.2}
 \addvspace {10\p@ }
-\contentsline {algorithm}{\numberline {3.1}{\ignorespaces Ein Algorithmus}}{8}{algorithm.3.1}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
 \addvspace {10\p@ }

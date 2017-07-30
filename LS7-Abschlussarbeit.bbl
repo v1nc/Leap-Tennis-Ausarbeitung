@@ -1,4 +1,4 @@
-\begin{thebibliography}{2}
+\begin{thebibliography}{4}
 % this bibliography was produced with the style dinat.bst v2.5
 \makeatletter
 \newcommand{\dinatlabel}[1]%
@@ -7,18 +7,31 @@
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \expandafter\ifx\csname url\endcsname\relax\def\url#1{\texttt{#1}}\fi
 
-\bibitem[Abramowski und M{\"u}ller(1991)]{Abramowski:1991}
-\dinatlabel{Abramowski und M{\"u}ller 1991} \textsc{Abramowski}, S.;
-  \textsc{M{\"u}ller}, H.:
-\newblock \emph{Geometrisches Modellieren}.
-\newblock Mannheim: B.I. Wissenschaftsverlag, 1991
-\newblock (Reihe Informatik)
+\bibitem[Gomez(1999)]{migGom:1999}
+\dinatlabel{Gomez 1999} \textsc{Gomez}, M.:
+\newblock \emph{Simple Intersection Tests for Games}.
+\newblock 1999. --
+\newblock URL:
+  \url{http://www.gamasutra.com/view/feature/131790/simple_intersection_tests_for_games.php},
+  abgerufen am: 23.7.2017
 
-\bibitem[M{\"u}ller und Weichert(2011)]{Muller:2011}
-\dinatlabel{M{\"u}ller und Weichert 2011} \textsc{M{\"u}ller}, H.;
-  \textsc{Weichert}, F.:
-\newblock \emph{Vorkurs Informatik: Der Einstieg ins Informatikstudium}.
-\newblock 2. Auflage.
-\newblock Vieweg+Teubner Verlag | Springer Fachmedien Wiesbaden GmbH, 2011
+\bibitem[Kessenich u.\,a.(2013)Kessenich, Sellers, Licea-Kane und
+  Shreiner]{ksls:2013}
+\dinatlabel{Kessenich u.\,a. 2013} \textsc{Kessenich}, J.; \textsc{Sellers},
+  G.; \textsc{Licea-Kane}, B.; \textsc{Shreiner}, D.:
+\newblock \emph{OpenGL Programming Guide: The Official Guide to Learning
+  OpenGL, Version 4.3}.
+\newblock 8. ed.
+\newblock Upper Saddler River, NJ: Addison-Wesley, 2013
+
+\bibitem[Reeves(1983)]{reeves:particle_systems}
+\dinatlabel{Reeves 1983} \textsc{Reeves}, W.:
+\newblock Particle Systems - Technique for Modeling a Class of Fuzzy Objects.
+\newblock In: \emph{ACM Transactions on Graphics}, ACM, 1983, S.~359--376
+
+\bibitem[Virag(2012)]{virag:2012}
+\dinatlabel{Virag 2012} \textsc{Virag}, G.:
+\newblock \emph{Grundlagen der 3D-Programmierung}.
+\newblock München: Open Source Press, 2012
 
 \end{thebibliography}
