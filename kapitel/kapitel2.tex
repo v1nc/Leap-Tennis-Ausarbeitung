@@ -9,7 +9,7 @@ In der graphischen Ausgabe der Anwendung sollen alle Objekte dargestellt werden.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\linewidth]{bilder/gameScene}
+	\includegraphics[width=0.6\linewidth]{bilder/gameScene2}
 	\caption{Szene aus der Anwendung}
 	\label{fig:gameScene}
 \end{figure}
@@ -45,11 +45,16 @@ Für das Erstellen der Modelle, die in der Anwendung zu sehen sind, wurde keine 
 
 \subsection{Spielfeld}
 %
-In der graphischen Ausgabe hat das Spielfeld die Form eines Quaders. Intern werden die einzelnen Wände als Ebenen repräsentiert. Da die {\texttt{Plane}}-Klasse eine Ebene in der Hesseschen Normalform\footnote{Näheres dazu in Kapitel \ref{Kapitel 4}} abspeichert, können aus den Abstandswerten der einzelnen Ebenen leicht die Koordinaten für die 8 Vertices des Modells gewonnen werden.
+In der graphischen Ausgabe hat das Spielfeld die Form eines Quaders. Intern werden die einzelnen Wände als Ebenen repräsentiert. Da die {\texttt{Plane}}-Klasse eine Ebene in der Hesseschen Normalform (siehe Kapitel \ref{Kapitel 4}) abspeichert, können aus den Abstandswerten der einzelnen Ebenen die Koordinaten für die 8 Vertices des Modells gewonnen werden.
 
 \subsection{Schläger}
 %
-Der Schläger ist in der graphischen Ausgabe ein regelmäßiges Polygon. Daher reduziert sich das Problem der Erzeugung der Vertices auf die Berechnung von Koordinaten auf dem Einheitskreis. Algorithmus \ref{algo_circle} enthält einen Ausschnitt aus dem Programmcode als Pseudocode.
+Der Schläger ist in der graphischen Ausgabe ein regelmäßiges Polygon. Daher reduziert sich das Problem der Erzeugung der Vertices auf die Berechnung von Koordinaten auf dem Einheitskreis. Ein Vertex $v$ auf dem Einheitskreis wird nach Formel \ref{unitCircleVerts} berechnet, wobei $\theta$ den Winkel zwischen der $x$-Achse und der Geraden, die vom Ursprung zu $v$ führt, angibt.
+\begin{equation}
+	\label{unitCircleVerts}
+	v=\begin{pmatrix} \cos (\theta) \\ \sin (\theta) \end{pmatrix}
+\end{equation}
+Algorithmus \ref{algo_circle} enthält einen Ausschnitt aus dem Programmcode als Pseudocode und wendet Formel \ref{unitCircleVerts} an.
 
 \begin{algorithm}[t]
 	\centering
@@ -57,11 +62,11 @@ Der Schläger ist in der graphischen Ausgabe ein regelmäßiges Polygon. Daher r
 	\begin{algorithmic}
 		\REQUIRE Anzahl der Kreissektoren $s$
 		\ENSURE Vertices $V$
-		\STATE $\Delta\theta := 2*\pi/s$
+		\STATE $\Delta\theta := 2\cdot\pi/s$
 		\STATE new Array $V[s+1]$
 		\STATE $V[0] := (0,0,0)$
 		\FOR{$i := 0$ \TO $i < s$}
-		\STATE $V[i+1] := (\cos(i*\Delta\theta), \sin(i*\Delta\theta), 0)$
+		\STATE $V[i+1] := (\cos(i\cdot\Delta\theta), \sin(i\cdot\Delta\theta), 0)$
 		\ENDFOR
 	\end{algorithmic}
 \end{algorithm}
@@ -70,7 +75,18 @@ Für ein besseres visuelles Ergebnis lässt sich über den Parameter $s$ die Anz
 
 \subsection{Ball}
 %
-Die Erzeugung der Vertices für das Ball-Modell lässt sich sich auf die Berechnung von Koordinaten auf der Kugeloberfläche der Einheitskugel zurückführen. Das Modell wird dabei in die beiden Pole und eine bestimmte Anzahl an Ringen, auf denen sich Vertices befinden, geteilt. Jeder Ring hat dabei die gleiche Anzahl an Vertices. Algorithmus \ref{algo_sphere} enthält einen Ausschnitt des Programmcodes als Pseudocode.
+Die Erzeugung der Vertices für das Ball-Modell lässt sich sich auf die Berechnung von Koordinaten auf der Kugeloberfläche der Einheitskugel zurückführen. Das Modell wird dabei in die beiden Pole und eine bestimmte Anzahl an Ringen, auf denen sich Vertices befinden, geteilt. Jeder Ring hat dabei die gleiche Anzahl an Vertices. Ein Vertex $v$ auf der Einheitskugel wird nach Formel \ref{unitSphereVerts} berechnet, wobei mit dem Winkel $\theta$ der aktuelle Ring und mit dem Winkel $\phi$ der Vertex auf dem Ring bestimmt wird.
+
+\begin{equation}
+\label{unitSphereVerts}
+v=\begin{pmatrix}
+	\sin (\theta) \cdot \cos (\phi)\\
+	\sin (\theta) \cdot \sin (\phi)\\
+	\cos (\theta)
+  \end{pmatrix}
+\end{equation}
+
+Algorithmus \ref{algo_sphere} enthält einen Ausschnitt des Programmcodes als Pseudocode und verwendet die Formel \ref{unitSphereVerts}.
 
 \begin{algorithm}[t]
 	\centering
@@ -78,19 +94,19 @@ Die Erzeugung der Vertices für das Ball-Modell lässt sich sich auf die Berechn
 	\begin{algorithmic}
 		\REQUIRE Anzahl der Ringe $r$, Anzahl der Punkte pro Ring $p$
 		\ENSURE Vertices $V$
-		\STATE $\Delta\phi := 2*\pi/p$
+		\STATE $\Delta\phi := 2\cdot\pi/p$
 		\STATE $\Delta\theta := \pi/(s + 1)$
 		\STATE $\phi := 0$
 		\STATE $\theta := 0$
-		\STATE new Array $V[2 + r * p]$
+		\STATE new Array $V[2 + r \cdot p]$
 		\STATE $V[0] := (0,0,1)$
-		\STATE $V[1 + r * p] := (0,0,-1)$
+		\STATE $V[1 + r \cdot p] := (0,0,-1)$
 		\STATE $offset := 0$
 		\FOR{$i := 1$ \TO $i \leq r$}
 		\STATE $\theta := \theta +\Delta\theta$
 			\FOR{$j := 0$ \TO $j < p$}
 			\STATE $\phi := \phi +\Delta\phi$
-			\STATE $V[i + j + offset] := (\sin(\theta)*\cos(\phi), sin(\theta) * \sin(\phi), \cos(\theta))$
+			\STATE $V[i + j + offset] := (\sin(\theta)\cdot\cos(\phi), sin(\theta) \cdot \sin(\phi), \cos(\theta))$
 			\ENDFOR
 			\STATE $\phi := 0$
 			\STATE $offset := offset + p - 1$
@@ -124,18 +140,30 @@ Position des Schlägers innerhalb des Spielfeldes zu erhalten, bewegt sich die K
 	{\includegraphics[scale=0.4]{bilder/cameraMoved}\label{fig:cameraMoved}
 	}
 	\vspace{-1.5cm}
-	\caption[Weitere Testbilder]{Kameraposition bei Bewegung des Schlägers}
+	\caption{Kameraposition bei Bewegung des Schlägers}
 	\label{fig:camera}
 \end{figure}
 
-In jedem Durchlauf der Hauptschleife wird der Kamera nach dem Aktualisieren der Position des Schlägers die neue Position mitgeteilt, wobei nur die $x$- und $y$-Koordinate in die neue Kameraposition mit einfließen. Die Kamera passt dann die View-Matrix an. Der Bewegungsbereich der Kamera ist so eingeschränkt, dass , wenn der Schläger außerhalb dieses Bewegungsbereiches bewegt wird, die Kamera innerhalb des Spielfelds verbleibt.
+In jedem Durchlauf der Hauptschleife wird der Kamera nach dem Aktualisieren der Position des Schlägers $\vec{p}_s$ die neue Position mitgeteilt, wobei nur die $x$- und $y$-Koordinate in die neue Kameraposition $\vec{p}_c$ mit einfließen. Die Kameraposition berechnet sich nach Formel \ref{camPos}. 
+
+\begin{equation}
+	\label{camPos}
+	\vec{p}_c = 0.75 \cdot 
+	\begin{pmatrix}
+		\min(\max(-3,x_{\vec{p}_s}),3)\\
+		\min(\max(-3,y_{\vec{p}_s}),3)\\
+		0
+	\end{pmatrix}
+\end{equation}
+
+Mit $\vec{p}_c$ wird dann die View-Matrix der Kamera angepasst. Der Bewegungsbereich der Kamera ist so eingeschränkt, dass die Kamera bei Bewegung des Schlägers außerhalb dieses Bewegungsbereiches innerhalb des Spielfelds verbleibt.
 \section{Partikelsystem}
 \label{Kapitel_2_-_Unterkapitel_2}
 %
 Partikelsysteme sind in interaktiven Anwendungen wie Computerspiele und in der Postproduktion von Filmen, seien es Real- oder Animationsfilme, allgegenwärtig.
 Man denke an typische Effekte wie Feuer und Rauch, aber auch Flüssigkeiten lassen sich mithilfe von Partikelsystemen realisieren.
 
-Nach \cite{reeves:particle_systems} sind Partikelsysteme besonders geeignet für Objekte die sich aufgrund ihrer Komplexität nur schwer mit einem Mesh darstellen lassen und sich im Verlauf der Zeit in ihrer Form ändern. Eine einfache Repräsentation solcher Objekte lässt sich daher mit Wolken aus Partikeln umsetzen, wobei die Partikel einfache Primitive wie Punkte, Linien und Dreiecke sind\cite{reeves:particle_systems}.
+Nach \cite{reeves:particle_systems} sind Partikelsysteme besonders geeignet für Objekte die sich aufgrund ihrer Komplexität nur schwer mit einem Mesh darstellen lassen und sich im Verlauf der Zeit in ihrer Form ändern. Eine einfache Repräsentation solcher Objekte lässt sich daher mit Wolken aus Partikeln umsetzen, wobei die Partikel einfache Primitive wie Punkte, Linien und Dreiecke sind.
 
 In der Anwendung wird ein Partikelsystem genutzt um den Flugverlauf des Balles darzustellen. Dabei sind die Partikel Quads, bestehend aus jeweils 6 Vertices, auf die eine Textur projiziert wird.
 
@@ -154,17 +182,16 @@ Instanced Rendering bezeichnet eine effiziente Variante des Renderns von Objekte
 
 Die Effizienz dieser Methode rührt daher, dass zum Rendern der Partikel nun nicht mehr über die Liste aller Partikel iteriert wird und für jedes Partikel ein Draw-Call getätigt wird. Stattdessen wird pro Frame nur ein einziger Draw-Call getätigt, das heißt, dass nur ein Befehl über den langsamen Peripheriebus zur Grafikkarte gesendet werden muss. Für das Instanced Rendering bietet OpenGL die Funktionen {\texttt{glDrawArraysInstanced}} und {\texttt{glDrawElementsInstanced}}.
 
-Um nicht zu sehr in den technischen Details zu versinken, soll nur kurz schematisch anhand von Abbildung \ref{fig:vao} der Vorgang beim Rendern der Partikel erläutert werden.
-%Todo vao bild;kurz auf performance eingehen; verweis auf super bible
+Für ein grundlegendes Verständnis von Instanced Rendering soll nur kurz schematisch anhand von Abbildung \ref{fig:vao} der Vorgang beim Rendern der Partikel erläutert werden.
 
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering
-	\includegraphics[scale=0.8]{bilder/vao}
+	\includegraphics[scale=0.8]{bilder/vao2}
 	\caption{VAO im {\texttt{BallParticleRenderable}} nach jedem Update der Partikel}
 	\label{fig:vao}
 \end{figure}
 
-Wie an Abbildung \ref{fig:vao} zu sehen ist, befinden sich die Vertizes $v_1\dotsc v_6$ , die Texturkoordinaten $t_1\dotsc t_6$ und die Model-Matrizen $M_1\dotsc M_n$, wobei $\mathnormal{n}$ die Anzahl der aktiven Partikel ist, in ihren eigenen Array-Buffer des VAOs des {\texttt{BallParticleRenderable}}-Objekts. Die Vertices und Texturkoordinaten ändern sich nicht. Die Model-Matrizen hingegen werden bei jedem Update der Partikel neu erzeugt und an den Array-Buffer gesendet.
+Wie an Abbildung \ref{fig:vao} zu sehen ist, befinden sich die Vertizes $v_1\dotsc v_6$\footnote{6 Vertices, da die Quads aus jeweils 2 Dreiecken bestehen} , die Texturkoordinaten $t_1\dotsc t_6$ und die Model-Matrizen $M_1\dotsc M_n$, wobei $\mathnormal{n}$ die Anzahl der aktiven Partikel ist, in ihren eigenen Array-Buffer des VAOs des {\texttt{BallParticleRenderable}}-Objekts. Die Vertices und Texturkoordinaten ändern sich nicht. Die Model-Matrizen hingegen werden bei jedem Update der Partikel neu erzeugt und an den Array-Buffer gesendet.
 
 Um Instanced Rendering zu nutzen muss der Array-Buffer der Model-Matrizen als Instance-Attribut des Vertex-Shaders deklariert werden. Dies sollte bei der Assoziation der Array-Buffer mit den Attributen des Vertex-Shader-Programms geschehen.
 Beim Rendern einer Instanz werden nun alle Vertexdaten und Texturkoordinaten, die keine Instanz-Variablen sind, und die jeweilige Model-Matrix der Instanz verwendet.
@@ -174,14 +201,20 @@ Für weitere Informationen zum Thema Instanced Rendering sei auf \cite{ksls:2013
 \subsection{Blending und Tiefentest}
 \label{Kapitel_2_-_Unterkapitel_2.3}
 %
-In dem verwendeten Partikelsystem sollen die Farben der Partikel, wenn sie sich überlagern, addiert werden. Der resultierende Effekt ist, dass bei genügend sich überlagernden Partikel ein leuchtend weißer Bereich zu sehen ist. Blending erlaubt es, Farben miteinander zu vermischen und ist ein Teil der Verarbeitung der Fragmente in der Rendering Pipeline. OpenGL bietet verschiedene Blending-Arten an, die durch den Aufruf der Funktion {\texttt{glBlendFunc}} eingestellt werden können. 
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.4]{bilder/BlendingEnabled}
-\caption{Partikelsystem bei aktiviertem Blending}
-\label{fig:BlendingEnabled}
+\begin{figure}[b]
+	\centering
+	\subfigure[Blending aktiviert]
+	{\includegraphics[height=6cm]{bilder/BlendingEnabled}\label{fig:BlendingEnabled}
+	}
+	\vspace{1.5cm}%
+	\subfigure[Blending aktiviert und Tiefenpuffer nicht-beschreibba]
+	{\includegraphics[height=6cm]{bilder/ParticleFinal}\label{fig:ParticleFinal}
+	}
+	\vspace{-1.5cm}
+	\caption{Partikelsystem in der Anwendung}
 \end{figure}
+In dem verwendeten Partikelsystem sollen die Farben der Partikel, wenn sie sich überlagern, addiert werden. Der resultierende Effekt ist, dass bei genügend sich überlagernden Partikel ein leuchtend weißer Bereich zu sehen ist. Blending erlaubt es, Farben miteinander zu vermischen und ist ein Teil der Verarbeitung der Fragmente in der Rendering Pipeline. OpenGL bietet verschiedene Blending-Arten an, die durch den Aufruf der Funktion {\texttt{glBlendFunc}} eingestellt werden können. 
 
 Abbildung \ref{fig:BlendingEnabled} zeigt wie das Partikelsystem bei eingeschaltetem Blending und Verwendung von {\texttt{glBlendFunc}} mit den Argumenten {\texttt{GL\_SRC\_ALPHA}} und {\texttt{GL\_ONE}} aussieht. Eine Übersicht über die verschiedenen Argumente für {\texttt{glBlendFunc}} und ihre Auswirkungen auf die Farbe eines Fragments ist in \cite{virag:2012} zu finden.
 
@@ -189,13 +222,6 @@ Wie an Abbildung \ref{fig:BlendingEnabled} zu erkennen ist tritt trotz eingescha
 
 Um dies zu umgehen, lässt sich mittels der Funktion {\texttt{glDepthMask}} das Schreiben in den Tiefenpuffer für das Rendern der Partikel verbieten.
 Das endgültige Resultat ist in Abbildung \ref{fig:ParticleFinal} zu sehen.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.4]{bilder/ParticleFinal}
-	\caption{Partikelsystem bei aktiviertem Blending und nicht-beschreibbarem Tiefenpuffer}
-	\label{fig:ParticleFinal}
-\end{figure}
 %
 
 
