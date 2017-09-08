@@ -9,26 +9,26 @@ Um die Bewegungen des Ball möglichst realistisch und nachvollziehbar zu realisi
 Da im Programm in jedem Durchlauf der Hauptschleife zuerst die Bewegungen und dann die Kollisionen bzw. die Reflexionen berechnet werden, wird auch in diesem Kapitel diese Reihenfolge beibehalten.
 \section{Bewegungen}
 \label{Kapitel_4_-_Unterkapitel_1}
-Die verschiedenen physikalische Eigenschaften des Balls werden in der Klasse BallPhysics verwaltet. Dazu gehören: Masse, Kraft, Gravitation und Geschwindigkeit.
+Die verschiedenen physikalischen Eigenschaften des Balls werden in der Klasse {\texttt{BallPhysics}} verwaltet. Dazu gehören: Masse, Kraft, Gravitation und Geschwindigkeit.
 %====================Kraft wird nicht benutzt!!================
 %===================Wahrscheinlich noch ändern=================
-Bei jedem Tick wird die Update-Methode des Balls aufgerufen, die wiederum für die Positionsbestimmung zunächst die Update-Methode der Klasse Ballphysics aufruft, die die aktuelle Geschwindigkeit berechnet. Da die Geschwindkeit als 3-dimensioneller Vektor gespeichert wird, ergibt sich daraus auch immer die Richtung in die der Ball sich bewegt. Dabei wird zunächst die Beschleunigung des Balls $\mathbf{a}$, die durch die Gravitationskraft $\mathbf{g}$ beeinflusst wird, berechnet und schließlich auf den Geschwindigkeitsvekor $\mathbf{v}$ addiert.
+Bei jedem Tick wird die Update-Methode des Balls aufgerufen, die wiederum für die Positionsbestimmung zunächst die Update-Methode der Klasse {\texttt{BallPhysics}} aufruft, die die aktuelle Geschwindigkeit berechnet. Da die Geschwindigkeit als 3-dimensionaler Vektor gespeichert wird, ergibt sich daraus auch immer die Richtung in die der Ball sich bewegt. Dabei wird zunächst die Beschleunigung des Balls $\mathbf{a}$, die durch die Gravitationskraft $\mathbf{g}$ beeinflusst wird, berechnet und schließlich auf den Geschwindigkeitsvektor $\mathbf{v}$ addiert.
  \begin{equation}
 	    \label{beschleunigung}
-	    \mathbf{a} = \mathbf{g} \cdot t 
+	    \mathbf{a} = \mathbf{g} \cdot \Delta t 
     \end{equation}
 Mithilfe des Geschwindigkeitsvektor lässt sich dann die nächste Position des Balls bestimmen:
 \begin{equation}
-	    \label{beschleunigung}
-	   \mathbf{p}_{t+1} = \mathbf{p}_{t} + \mathbf{v}\Delta t 
+	    \label{position}
+	   \mathbf{p}_{t+1} = \mathbf{p}_{t} + \mathbf{v} \cdot \Delta t 
     \end{equation}
-Schließlich werden dann basierend auf der neuen Position die Rendering-Informationen aktualisert. 
+Schließlich werden dann basierend auf der neuen Position die Rendering-Informationen aktualisiert. 
 
 
 \section{Reflexion}
 \label{Kapitel_4_-_Unterkapitel_2}
 
-Nachdem die Positionen aktualisert wurden, wird geprüft, ob an den neuen Positionen Kollisionen aufgetreten sind. Dies geschieht in der {\texttt{CollisionResolver}}-Klasse. Die Funktion {\texttt{resolveCollisions(Ball* ball, Racket* racket, Box* box)}} wird von der Hauptschleife aus aufgerufen und überprüft zuerst die Kollision des Balls mit der Box bzw. mit den 6 Ebenen der Box und dann die Kollision mit dem Schläger.
+Nachdem die Positionen aktualisiert wurden, wird geprüft, ob an den neuen Positionen Kollisionen aufgetreten sind. Dies geschieht in der {\texttt{CollisionResolver}}-Klasse. Die Funktion {\texttt{resolveCollisions(Ball* ball, Racket* racket, Box* box)}} wird von der Hauptschleife aus aufgerufen und überprüft zuerst die Kollision des Balls mit der Box bzw. mit den 6 Ebenen der Box und dann die Kollision mit dem Schläger.
 Die Ebenen werden in einer Hesseschen Normalform ähnlichen Darstellung gespeichert, sodass der Abstand des Balls zu einer Ebene leicht berechnet werden kann.
 
 %\begin{figure}[h]
@@ -39,7 +39,7 @@ Die Ebenen werden in einer Hesseschen Normalform ähnlichen Darstellung gespeich
 %        \label{fig_testbild}
 %\end{figure} 
 
-Da die Hessesche Normalform wie folgt aussieht, $ E: \vec x \cdot \vec n  = d $, und d der Abstand zum Ursprung ist, lässt sich die Formel umformen zu $ E: \vec x \cdot \vec n  - d = 0$. Diese Formel ist erfüllt wenn $\vec x$ auf der Ebene liegt. Ersetzt man also 0 durch eine Variable $c$, kann der Abstand von Punkt $\vec x$ zur Ebene genau ermittelt werden. In unserem Fall erlauben wir auch negative Abstände; negative Abstände entstehen dann durch Ballpositionen, die hinter der Ebene liegen (entgegen der Richtung des Normalvektors).
+Da die Hessesche Normalform wie folgt aussieht, $ E: \vec x \cdot \vec n  = d $, und d der Abstand zum Ursprung ist, lässt sich die Formel umformen zu $ E: \vec x \cdot \vec n  - d = 0$. Diese Formel ist erfüllt wenn $\vec x$ auf der Ebene liegt. Ersetzt man also 0 durch eine Variable $c$, kann der Abstand von Punkt $\vec x$ zur Ebene genau ermittelt werden. In unserem Fall erlauben wir auch negative Abstände; negative Abstände entstehen dann durch Ballpositionen, die hinter der Ebene liegen (entgegen der Richtung des Normalenvektors).
 Der Abstand des Ballmittelpunkts zur Ebene ist also $c = \vec p\cdot \vec n - d $. Somit lässt sich eine Kollision feststellen, wenn der Abstand zur Ebene kleiner als der Radius des Balls ist.
 
 Damit der Ball bei zu hohen Geschwindigkeiten nicht hinter die Ebene gelangt und die Kollision nicht erkannt wird, wurde eine Kollisionsüberprüfung implementiert, die genau dies verhindern soll (nach \cite{migGom:1999}). Denn bei dieser Methode wird der Ball auf eine Position vor der Ebene zurückgesetzt, falls er tatsächlich hinter die Ebene gelangt (s. Abbildung \ref{fig_interpol}). 
@@ -66,10 +66,10 @@ Befindet sich $\mathbf{p}_{t-1}$ vor der Ebene und $\mathbf{p}_t$ hinter der Ebe
 
 Ist der Ball nicht vollständig hinter die Ebene geflogen - d.h. es gilt $d_t<0$ und $|d_t|<R $ - dann wird der Ball um $R - |d_t|$ in Richtung des Normalenvektors der Ebene verschoben.
 
-Die Kollisionserkennung mit dem Schläger verläuft nach ähnlichem Schema ab. Auch die Fläche des Schlägers wird als Ebene gespeichert. Es muss also auch nur der Abstand zu Ebene berechnet werden und mit dm Radius des Balls verglichen werden (visualisiert in Abbildung \ref{fig_colRacket2}). Ist der Abstand kleiner gleich dem Radius, dann kollidiert der Ball mit dem Schläger. Jedoch ist Der Schläger keine unendlich große Fläche wie die  Boxwände, sondern ist auf eine bestimmte Kreisfläche begrenzt. Das heißt, dass eine zusätzliche Abfrage gemacht werden muss, die überprüft ob der Ball eine entsprechend kleine Distanz zum Schlägermittelpunkt besitzt.
-Wenn $\mathbf{p}_{racket}$ die Position des Schlägermittelpunkts, $\mathbf{p}$ die Position des Balls und $R$ den Radius des Schlägers beschreibt dann gilt bei Kollision:
+Die Kollisionserkennung mit dem Schläger läuft nach ähnlichem Schema ab. Auch die Fläche des Schlägers wird als Ebene gespeichert. Es muss also auch nur der Abstand zu Ebene berechnet werden und mit dem Radius des Balls verglichen werden (visualisiert in Abbildung \ref{fig_colRacket2}). Ist der Abstand kleiner gleich dem Radius, dann kollidiert der Ball mit dem Schläger. Jedoch ist der Schläger keine unendlich große Fläche wie die  Boxwände, sondern ist auf eine bestimmte Kreisfläche begrenzt. Das heißt, dass eine zusätzliche Abfrage gemacht werden muss, die überprüft, ob der Ball eine entsprechend kleine Distanz zum Schlägermittelpunkt besitzt.
+Wenn $\mathbf{p}_{racket}$ die Position des Schlägermittelpunkts, $\mathbf{p}$ die Position des Balls und $R$ den Radius des Schlägers beschreibt, dann gilt bei einer Kollision:
 \begin{equation}
-	|\mathbf{p}_{racket}\cdot\mathbf{p}| <= R
+	|\mathbf{p}_{racket}\cdot\mathbf{p}| \leq R
 \end{equation}
 
 \begin{figure}[h]
@@ -80,14 +80,14 @@ Wenn $\mathbf{p}_{racket}$ die Position des Schlägermittelpunkts, $\mathbf{p}$ 
         \label{fig_colRacket2}
 \end{figure} 
 
-Ist eine Kollision aufgetreten, so kann der Ball entsprechend der Formel \ref{reflexion}) reflektiert werden.
+Ist eine Kollision aufgetreten, so kann der Ball entsprechend der Formel \ref{reflexion} reflektiert werden.
 
 \begin{equation}	
 \label{reflexion}
-	\vec{v}_{neu} = 2* \langle \vec{n},\vec{-v} \rangle * \vec{n} + \vec{v}
+	\vec{v}_{neu} = 2 \cdot \langle \vec{n},-\vec{v} \rangle \cdot \vec{n} + \vec{v}
 \end{equation}
 
-Um den neuen Vektor zu berechnen muss zunächst der Einfallsvektor des Balls auf den Normalenvektor projiziert werden (gesucht ist also eine Faktor $k$, sodass $k\vec{n}$ eine Projektion von $-\vec{v}$ nach $\vec{n}$ ist). Der Einfallsvektor wird deswegen invertiert, weil ein Ausfallsvektor gesucht wird, der nicht wie der Einfallsvektor in Richtung der Ebene zeigt. $k$ lässt sich mithilfe des Skalarprodukts $\langle\vec{n},-\vec{v}\rangle$ berechnen, da der Normalenvektor einer Ebene in unserer Implementierung immer normiert gespeichert wird.
+Um den neuen Vektor zu berechnen muss zunächst der Einfallsvektor des Balls auf den Normalenvektor projiziert werden (gesucht ist also ein Faktor $k$, sodass $k\vec{n}$ eine Projektion von $-\vec{v}$ nach $\vec{n}$ ist). Der Einfallsvektor wird deswegen invertiert, weil ein Ausfallsvektor gesucht wird, der nicht wie der Einfallsvektor in Richtung der Ebene zeigt. $k$ lässt sich mithilfe des Skalarprodukts $\langle\vec{n},-\vec{v}\rangle$ berechnen, da der Normalenvektor einer Ebene in unserer Implementierung immer normiert gespeichert wird.
 
 
 
@@ -99,12 +99,10 @@ Um den neuen Vektor zu berechnen muss zunächst der Einfallsvektor des Balls auf
     \hspace{1.5cm}%
     \subfigure[Zusammensetzung des Ausfallsvektors]
          {\includegraphics[scale=0.8]{bilder/reflexion2}\label{fig_reflexion_b}
-             \label{abb2}
-
     }
     \caption{Berechnung des neuen Vektors bei einer Reflexion an einer Ebene mit Normalenvektor}
         \label{fig_reflexion}
 	\end{center}
     \end{figure}
     
-Die Länge des Projizierten Vektors $k\vec{n}$ muss nun, wie in Abbildung \ref{abb2} zu sehen, verdoppelt werden und zum Einfallsvektors $\vec{v}$ addiert werden. Das Ergebnis ist dann der Ausfallwinkel in entsprechender Richtung. Soll der Ausfallsvektor betragsmäßig kleiner sein (d.h. der Ball soll z.B. beim Abprallen an Wänden an Geschwindigkeit verlieren), kann der Vorfaktor 2 entsprechend verringert werden (In unserer Implementierung beträgt der Wert: 1,75).
+Die Länge des projizierten Vektors $k\vec{n}$ muss nun, wie in Abbildung \ref{fig_reflexion_b} zu sehen, verdoppelt werden und zum Einfallsvektors $\vec{v}$ addiert werden. Das Ergebnis ist dann der Ausfallwinkel in entsprechender Richtung. Soll der Ausfallsvektor betragsmäßig kleiner sein (d.h. der Ball soll z.B. beim Abprallen an Wänden an Geschwindigkeit verlieren), kann der Vorfaktor 2 entsprechend verringert werden (In unserer Implementierung beträgt der Wert: 1,75).
