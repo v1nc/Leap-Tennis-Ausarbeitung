@@ -1,4 +1,4 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{5}
 % this bibliography was produced with the style dinat.bst v2.5
 \makeatletter
 \newcommand{\dinatlabel}[1]%
@@ -10,10 +10,10 @@
 \bibitem[Gomez(1999)]{migGom:1999}
 \dinatlabel{Gomez 1999} \textsc{Gomez}, M.:
 \newblock \emph{Simple Intersection Tests for Games}.
+\newblock
+  \url{http://www.gamasutra.com/view/feature/131790/simple_intersection_tests_for_games.php}.
 \newblock 1999. --
-\newblock URL:
-  \url{http://www.gamasutra.com/view/feature/131790/simple_intersection_tests_for_games.php},
-  abgerufen am: 23.7.2017
+\newblock Abgerufen am 23.7.2017
 
 \bibitem[Kessenich u.\,a.(2013)Kessenich, Sellers, Licea-Kane und
   Shreiner]{ksls:2013}
@@ -23,6 +23,14 @@
   OpenGL, Version 4.3}.
 \newblock 8. ed.
 \newblock Upper Saddler River, NJ: Addison-Wesley, 2013
+
+\bibitem[Leap~Motion()]{leap}
+\dinatlabel{Leap~Motion } \textsc{Leap~Motion}, Inc.:
+\newblock \emph{Using the Tracking API}.
+\newblock
+  \url{https://developer.leapmotion.com/documentation/cpp/devguide/Leap_Guides2.html}.
+  --
+\newblock Abgerufen am 18.08.2017
 
 \bibitem[Reeves(1983)]{reeves:particle_systems}
 \dinatlabel{Reeves 1983} \textsc{Reeves}, W.:

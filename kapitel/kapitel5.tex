@@ -5,20 +5,47 @@
 \chapter{Ergebnisse und Diskussion}
 \label{Kapitel 5}
 %
-Um die Umsetzung des Fachprojekts zu analysieren und ausreichend zu diskutieren, wurden Testpersonen befragt, nachdem sie eine Zeit lang das Spiel getestet haben. Folgende Fragen wurden ihnen danach gestellt:
+Um die Umsetzung des Fachprojekts zu analysieren wurden fünf Teilnehmer des Fachprojekts Visual Computing befragt, nachdem sie eine Zeit lang das Spiel getestet hatten.
+\subsection{Fragen}
 \begin{enumerate}
-	\item \glqq Welche Probleme haben Sie bei der Steuerung bemerkt ?\grqq
-	\item \glqq Wie haben Sie die Steuerung im Vergleich zum normalen Tischtennis empfunden ?\grqq
+	\item \glqq Hatten Sie Probleme bei der Steuerung, wenn ja welche ?\grqq
+	\item \glqq Wie haben Sie die Steuerung im Vergleich zum normalen Tennis empfunden ?\grqq
 	\item \glqq Als wie realitätsnah haben Sie die Bewegung des Balls empfunden ?\grqq
-	
 \end{enumerate}
-
+\subsection{Antworten}
+\begin{itemize}
+	\item Person A: \begin{enumerate}
+		\item \glqq Am Anfang war es schwierig den Ball zu treffen, nach einer kurzen Eingewöhnungszeit hatte ich aber keine Probleme mehr.\grqq
+		\item \glqq Beim normalen Tennis kann man den Ball mit Schwung schlagen, hier muss man ihn eher drücken.\grqq
+		\item \glqq Die Kraftübertragung vom Schläger zum Ball war zu extrem.\grqq
+	\end{enumerate}
+	\item Person B: \begin{enumerate}
+		\item \glqq Ich hatte Probleme den Ball zu treffen, da er vor der weißen Wand schwer zu erkennen war.\grqq
+		\item \glqq Das tatsächliche Gefühl, Tischtennis zu spielen, ist nicht vorhanden. Der Ball wird mit der flachen Hand geschlagen, nicht mit einem Objekt, was in der Hand gehalten wird.\grqq
+		\item \glqq Die Geschwindigkeit des Balls nahm, nachdem er geschlagen wurde, zu schnell ab.\grqq
+	\end{enumerate}
+	\item	Person C: \begin{enumerate}
+		\item \glqq Da die Kamera sich mit der Hand bewegt, ist es manchmal schwer den Ball zu treffen.\grqq
+		\item \glqq Beim Tennis kann der Ball mit der Rückhand geschlagen werden, hier ist das nur bedingt möglich.\grqq
+		\item \glqq Der Ball ist zu schnell wenn er getroffen wurde.\grqq
+	\end{enumerate}
+	\item	Person D: \begin{enumerate}
+		\item \glqq Ich hatte keine Probleme bei der Steuerung.\grqq
+		\item \glqq Der Winkel des Schlägers kann nicht genug variiert werden.\grqq
+		\item \glqq Die Bewegung des Balls kam mir sehr real vor.\grqq
+	\end{enumerate}
+	\item Person E: \begin{enumerate}
+		\item \glqq Zeitweise wurde meine Hand nicht erkannt und ich konnte den Schläger nicht mehr bewegen.\grqq
+		\item \glqq Es fehlt das Gefühl, mit einem Schläger zu schlagen.\grqq
+		\item \glqq Der Ball wird zu schnell zu langsam.\grqq
+	\end{enumerate}
+\end{itemize}
 \section{Graphische Ausgabe}
 \label{Kapitel_5_-_Unterkapitel_1}
-Die graphische Ausgabe wurde von allen Testpersonen für gut empfunden. Probleme, die bei der Steuerung auftraten,  wurden durch die Kamerabewegung beim Bewegen der Hand und die nahe Ansicht auf die Szene verstärkt. Eine Testperson antwortete auf Frage eins: \glqq Da die Kamera sich mit der Hand bewegt, ist es manchmal schwer den Ball zu treffen.\grqq. Die Bewegung der Kamera wäre nicht notwendig, wenn die Szene aus größerer Entfernung betrachtet werden würde.
+Die graphische Ausgabe wurde von allen Testpersonen für gut befunden. Probleme, die bei der Steuerung auftraten,  wurden durch die Kamerabewegung beim Bewegen der Hand und die nahe Ansicht auf die Szene verstärkt, wie man an der Antwort von Person C auf Frage eins sieht. Die Bewegung der Kamera wäre nicht notwendig, wenn die Szene aus größerer Entfernung betrachtet werden würde. Person B hatte Probleme, den Ball vor der weißen Wand zu erkennen, deswegen könnte die Farbe des Balls oder der Wand geändert werden.
 \section{Steuerung}
 \label{Kapitel_5_-_Unterkapitel_2}
-Beim Bedienen der Anwendung traten  die meisten Probleme auf. Eine Person antwortete auf Frage zwei: \glqq Das tatsächliche Gefühl, Tischtennis zu spielen, ist nicht vorhanden. Der Ball wird mit der flachen Hand geschlagen, nicht mit einem Objekt, was in der Hand gehalten wird.\grqq \ Zur Bestimmung der Position des Schlägers sollte nicht der Handmittelpunkt, sondern der Mittelpunkt eines gedachten Schlägers in der Hand des Spielers verwendet werden. Dadurch könnte der Spieler das Gefühl erhalten, er schlage den Ball mit einem Schläger.
+Beim Bedienen der Anwendung traten  die meisten Probleme auf. Den Personen B und E fehlten außerdem das Gefühl mit einem Schläger zu schlagen. Zur Bestimmung der Position des Schlägers sollte nicht der Handmittelpunkt, sondern der Mittelpunkt eines gedachten Schlägers in der Hand des Spielers verwendet werden. Dadurch könnte der Spieler das Gefühl erhalten, er schlage den Ball mit einem Schläger.
 \section{Physik}
 \label{Kapitel_5_-_Unterkapitel_3}
-Einige Testpersonen empfanden, dass die Geschwindigkeit des Balls nach dem Schlagen zu hoch war und zu schnell abnahm. Um den Flug des Balls noch realistischer zu gestalten, könnte die berechnete Gravitation erhöht werden, außerdem sollte die Geschwindigkeit des Balls nach dem er getroffen wurde geringer sein.
+Einige Testpersonen empfanden, dass die Geschwindigkeit des Balls nach dem Schlagen zu hoch war und zu schnell abnahm(siehe Antworten Personen A,B,C,E). Um den Flug des Balls noch realistischer zu gestalten, könnte die Gravitation erhöht werden, außerdem sollte die Geschwindigkeit des Balls nachdem er getroffen wurde geringer sein.
